@@ -1,8 +1,8 @@
 ---
 tipo: em-andamento
 data: 2026-10-30
-agente: codex
-status: livre
+agente: claude-code
+status: ativo
 tags: [handoff, memoria]
 ---
 
@@ -16,24 +16,17 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- Nenhuma; revisão do estado do projeto concluída.
+- (1) Corrigir `scripts/agent.ps1` para o Codex conseguir registrar commits; (2) item 1 do [[backlog]]: ambiente de desenvolvimento.
 
 ## Feito até agora
 
-- Confirmado que não havia tarefa interrompida.
-- Lidos o [[00-Indice]], o [[backlog]] e o último log, [[log/2026-10-30-troca-entre-agentes]].
-- Conferidas as seis decisões existentes e preparado o resumo do estado documentado.
-- Atualizados índice e backlog; criado [[log/2026-10-30-verificacao-estado]].
-- Commit tentado, mas bloqueado pela falta de permissão para criar `.git/index.lock`.
+- Commit das alterações pendentes da sessão do Codex (`624feec`).
+- Escolhido Python 3.12 (3.11 não está instalado; 3.14 é novo demais para libs de áudio/ML).
 
 ## Próximo passo
 
-- Próxima tarefa técnica conforme [[00-Indice]]: validar Codex CLI e configurar o ambiente Python.
-- Registrar as alterações documentais em commit em uma sessão com escrita permitida em `.git`.
+- Ajustar `scripts/agent.ps1` (commit após o Codex) e criar a `.venv` com `py -3.12`.
 
 ## Arquivos tocados (ainda sem commit)
 
 - `vault/em-andamento.md`
-- `vault/00-Indice.md`
-- `vault/backlog.md`
-- `vault/log/2026-10-30-verificacao-estado.md`

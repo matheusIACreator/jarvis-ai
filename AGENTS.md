@@ -60,6 +60,8 @@ src/jarvis/
 
 **Switching agents:** `scripts/agent.ps1 "<task>"` runs Claude Code headless and hands the same task to Codex if Claude hits its usage limit. In interactive sessions the switch is manual: open the other agent and say "continue the task in progress".
 
+**Codex and git:** Codex's sandbox keeps `.git` read-only. When a commit fails for that reason, leave the changes uncommitted and keep `vault/em-andamento.md` accurate; `scripts/agent.ps1` (or the next agent) commits them.
+
 **Log rules:**
 
 - Logs are append-only. Never edit or delete old log entries.

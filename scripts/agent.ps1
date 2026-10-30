@@ -39,8 +39,16 @@ function Invoke-Codex {
         Write-Error "Codex CLI not found. Install it first (see vault/decisoes/0006-troca-entre-agentes.md)."
     }
     Write-Host "==> Running Codex" -ForegroundColor Cyan
-    codex exec $prompt
-    exit $LASTEXITCODE
+    codex exec --sandbox workspace-write $prompt
+    $codexExit = $LASTEXITCODE
+
+    # Codex's workspace-write sandbox keeps .git read-only, so commit on its behalf.
+    if (git status --porcelain) {
+        Write-Host "==> Committing Codex changes" -ForegroundColor Cyan
+        git add -A
+        git commit -q -m "chore(codex): session changes" -m "Task: $Task" -m "Committed by scripts/agent.ps1 because the Codex sandbox cannot write to .git."
+    }
+    exit $codexExit
 }
 
 if ($Agent -eq "codex") {
