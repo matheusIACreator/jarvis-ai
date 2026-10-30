@@ -1,7 +1,7 @@
 ---
 tipo: indice
 data: 2026-10-30
-atualizado-por: codex
+atualizado-por: claude-code
 tags: [indice, jarvis]
 ---
 
@@ -20,13 +20,12 @@ tags: [indice, jarvis]
 - [ ] Fase 2 — notificações e "me chama" via bot do Telegram
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
-- Revisão documental por Codex em 2026-10-30: estado e pendências conferidos; sem implementação nesta sessão.
+- Fase 1 em andamento: ambiente de desenvolvimento pronto (`.venv` Python 3.12, pytest, 2 testes passando).
+- Troca entre agentes funcionando: Codex CLI instalado; `scripts/agent.ps1` faz commit pelo Codex.
 
 ## Próxima tarefa
 
-- Pendente do usuário: instalar o Codex CLI e testar `scripts/agent.ps1 -Agent codex` (ver [[decisoes/0006-troca-entre-agentes]]).
-- Configurar o ambiente de desenvolvimento: criar a `.venv` com Python 3.11+, instalar o pacote em modo editável (`pip install -e .`), configurar pytest e validar que `import jarvis` funciona no PowerShell.
-- Detalhes no [[backlog]].
+- Item 2 do [[backlog]]: módulo `jarvis.config` que carrega as variáveis do `.env` (caminhos com `pathlib`, erro claro se faltar chave obrigatória), com testes.
 
 ## Links
 
@@ -40,12 +39,13 @@ tags: [indice, jarvis]
 - [[decisoes/0004-memoria-compartilhada-obsidian|0004 — Memória compartilhada no Obsidian]]
 - [[decisoes/0005-primeira-versao-telegram|0005 — Primeira versão com Telegram]]
 - [[decisoes/0006-troca-entre-agentes|0006 — Troca entre agentes]]
+- [[decisoes/0007-python-3-12|0007 — Python 3.12]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-30-verificacao-estado|2026-10-30 — Verificação do estado do projeto]]
+- [[log/2026-10-30-ambiente-dev|2026-10-30 — Ambiente de desenvolvimento]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]

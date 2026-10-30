@@ -10,7 +10,7 @@ Jarvis is a personal voice assistant (Iron Man style) for a single user, Matheus
 Decisions already made (details in `vault/decisoes/`):
 
 - **Platform:** runs natively on Windows 11 (PowerShell, native Python). No WSL, no Docker for now.
-- **Environment:** use a local virtual environment in `.venv` (`py -3.11 -m venv .venv`, then `.\.venv\Scripts\Activate.ps1`).
+- **Environment:** Python 3.12 in a local virtual environment `.venv` (`py -3.12 -m venv .venv`, `.\.venv\Scripts\Activate.ps1`, `pip install -e ".[dev]"`). Run tests with `pytest`. Without activating, call `.\.venv\Scripts\python.exe` directly.
 - **Docs:** shell commands in docs are written for PowerShell.
 - **Paths:** always build paths with `pathlib`. Never hardcode backslashes or separators.
 - **Brain:** Anthropic API. Default model `claude-haiku-5-5` for the voice loop (fast, cheap). `claude-sonnet-5-5` only for tasks that need deeper reasoning. Use prompt caching for the stable system prompt and tool definitions.

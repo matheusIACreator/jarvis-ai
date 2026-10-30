@@ -2,7 +2,7 @@
 tipo: em-andamento
 data: 2026-10-30
 agente: claude-code
-status: ativo
+status: livre
 tags: [handoff, memoria]
 ---
 
@@ -16,17 +16,16 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- (1) Corrigir `scripts/agent.ps1` para o Codex conseguir registrar commits; (2) item 1 do [[backlog]]: ambiente de desenvolvimento.
+- Nenhuma. Última concluída: ambiente de desenvolvimento ([[log/2026-10-30-ambiente-dev]]).
 
 ## Feito até agora
 
-- Commit das alterações pendentes da sessão do Codex (`624feec`).
-- Escolhido Python 3.12 (3.11 não está instalado; 3.14 é novo demais para libs de áudio/ML).
+- 
 
 ## Próximo passo
 
-- Ajustar `scripts/agent.ps1` (commit após o Codex) e criar a `.venv` com `py -3.12`.
+- Pegar a próxima tarefa do [[00-Indice]].
 
 ## Arquivos tocados (ainda sem commit)
 
-- `vault/em-andamento.md`
+- 

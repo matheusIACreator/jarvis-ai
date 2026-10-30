@@ -11,17 +11,18 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 ## Revisão documental
 
 - [x] Resumo do estado do projeto por Codex em 2026-10-30; pendências técnicas mantidas conforme [[00-Indice]] e [[log/2026-10-30-verificacao-estado]].
-- [ ] Registrar em commit as alterações desta revisão; a sessão não tem permissão de escrita em `.git`.
+- [x] Registrar em commit as alterações desta revisão (feito por claude-code; `scripts/agent.ps1` agora faz o commit pelo Codex).
 
 ## Infra dos agentes
 
 - [x] Checkpoint vivo em `em-andamento.md` e protocolo de troca no `AGENTS.md`.
 - [x] Script `scripts/agent.ps1` com fallback Claude Code → Codex.
-- [ ] Instalar o Codex CLI, fazer login e testar o fallback de ponta a ponta.
+- [x] Instalar o Codex CLI e fazer login (`codex-cli 0.166.0`).
+- [ ] Observar um fallback real Claude → Codex por limite de uso e ajustar a detecção se necessário.
 
 ## Fase 1 — MVP (palmas → música → saudação → comando → resposta)
 
-- [ ] 1. Ambiente de desenvolvimento: `.venv` com Python 3.11+, `pip install -e .`, pytest configurado, `import jarvis` funcionando no PowerShell.
+- [x] 1. Ambiente de desenvolvimento: `.venv` com Python 3.12, `pip install -e ".[dev]"`, pytest configurado, `import jarvis` funcionando no PowerShell.
 - [ ] 2. Configuração: carregar variáveis do `.env` em um módulo `jarvis.config` (caminhos com `pathlib`, falha clara se faltar chave).
 - [ ] 3. Captura de microfone: stream de áudio contínuo do microfone do notebook (escolher biblioteca e pedir aprovação antes de instalar).
 - [ ] 4. Detector de palmas duplas: detecção de picos de energia + janela de tempo entre as duas palmas; testes com sinais sintéticos.

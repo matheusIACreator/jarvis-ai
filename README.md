@@ -16,9 +16,11 @@ A personal voice assistant (Iron Man style) for a single user, running natively 
 ## Setup (PowerShell)
 
 ```powershell
-py -3.11 -m venv .venv
+py -3.12 -m venv .venv
 .\.venv\Scripts\Activate.ps1
+pip install -e ".[dev]"
 Copy-Item .env.example .env   # then fill in real values locally
+pytest
 ```
 
 ## Shared agent memory
