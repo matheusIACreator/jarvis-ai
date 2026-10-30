@@ -9,6 +9,7 @@ description = "Personal voice assistant (Iron Man style), native on Windows 11."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
+    "elevenlabs>=2",
     "numpy>=2",
     "sounddevice>=0.5",
 ]

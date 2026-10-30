@@ -15,7 +15,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_ENV_FILE = PROJECT_ROOT / ".env"
 DEFAULT_STARTUP_AUDIO = Path("assets") / "audio" / "startup.mp3"
 
-REQUIRED_KEYS = ("ANTHROPIC_API_KEY", "ELEVENLABS_API_KEY", "ELEVENLABS_VOICE_ID")
+REQUIRED_KEYS = ("ANTHROPIC_API_KEY", "ELEVENLABS_API_KEY")
+
+# ElevenLabs "Daniel": British male, formal broadcaster tone.
+DEFAULT_VOICE_ID = "onwK4e9ZLuTAKqWW03F9"
 
 # Values copied unchanged from .env.example start with this prefix.
 PLACEHOLDER_PREFIX = "your-"
@@ -27,8 +30,8 @@ class ConfigError(RuntimeError):
 
 @dataclass(frozen=True)
 class Config:
-    anthropic_api_key: str
-    elevenlabs_api_key: str
+    anthropic_api_key: str | None
+    elevenlabs_api_key: str | None
     elevenlabs_voice_id: str
     startup_audio_path: Path
     telegram_bot_token: str | None = None
@@ -87,15 +90,19 @@ def load_config(
     env_file: Path | None = DEFAULT_ENV_FILE,
     environ: Mapping[str, str] | None = None,
     root: Path = PROJECT_ROOT,
+    required: tuple[str, ...] = REQUIRED_KEYS,
 ) -> Config:
-    """Build a `Config`, raising `ConfigError` that names every missing required key."""
+    """Build a `Config`, raising `ConfigError` that names every missing required key.
+
+    Pass a smaller `required` tuple for tools that only use part of the configuration.
+    """
     merged: dict[str, str] = {}
     if env_file is not None and env_file.is_file():
         merged.update(parse_env(env_file.read_text(encoding="utf-8-sig")))
     merged.update(os.environ if environ is None else environ)
 
     values = {key: _clean(merged.get(key)) for key in merged}
-    missing = [key for key in REQUIRED_KEYS if not values.get(key)]
+    missing = [key for key in required if not values.get(key)]
     if missing:
         raise ConfigError(
             "Missing required configuration: "
@@ -104,9 +111,9 @@ def load_config(
         )
 
     return Config(
-        anthropic_api_key=values["ANTHROPIC_API_KEY"],
-        elevenlabs_api_key=values["ELEVENLABS_API_KEY"],
-        elevenlabs_voice_id=values["ELEVENLABS_VOICE_ID"],
+        anthropic_api_key=values.get("ANTHROPIC_API_KEY"),
+        elevenlabs_api_key=values.get("ELEVENLABS_API_KEY"),
+        elevenlabs_voice_id=values.get("ELEVENLABS_VOICE_ID") or DEFAULT_VOICE_ID,
         startup_audio_path=_resolve_path(
             values.get("STARTUP_AUDIO_PATH"), DEFAULT_STARTUP_AUDIO, root
         ),

@@ -2,12 +2,11 @@ from pathlib import Path
 
 import pytest
 
-from jarvis.config import ConfigError, load_config, parse_env
+from jarvis.config import DEFAULT_VOICE_ID, ConfigError, load_config, parse_env
 
 REQUIRED = {
     "ANTHROPIC_API_KEY": "sk-ant-test",
     "ELEVENLABS_API_KEY": "el-test",
-    "ELEVENLABS_VOICE_ID": "voice-1",
 }
 
 
@@ -61,11 +60,26 @@ def test_missing_env_file_is_not_an_error(tmp_path):
 
 def test_missing_keys_are_all_reported(tmp_path):
     with pytest.raises(ConfigError) as excinfo:
-        load_config(env_file=None, environ={"ELEVENLABS_API_KEY": "x"}, root=tmp_path)
+        load_config(env_file=None, environ={}, root=tmp_path)
     message = str(excinfo.value)
     assert "ANTHROPIC_API_KEY" in message
-    assert "ELEVENLABS_VOICE_ID" in message
-    assert "ELEVENLABS_API_KEY" not in message
+    assert "ELEVENLABS_API_KEY" in message
+
+
+def test_voice_defaults_to_british_male(tmp_path):
+    config = load_config(env_file=None, environ=REQUIRED, root=tmp_path)
+    assert config.elevenlabs_voice_id == DEFAULT_VOICE_ID
+
+
+def test_required_subset(tmp_path):
+    config = load_config(
+        env_file=None,
+        environ={"ELEVENLABS_API_KEY": "el-test"},
+        root=tmp_path,
+        required=("ELEVENLABS_API_KEY",),
+    )
+    assert config.anthropic_api_key is None
+    assert config.elevenlabs_api_key == "el-test"
 
 
 def test_placeholders_from_example_count_as_missing(tmp_path):
