@@ -2,7 +2,7 @@
 tipo: em-andamento
 data: 2026-10-30
 agente: claude-code
-status: ativo
+status: livre
 tags: [handoff, memoria]
 ---
 
@@ -16,19 +16,16 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- Item 10 do [[backlog]] (adiantado a pedido do usuário): voz do Jarvis com ElevenLabs,
-  voz masculina britânica, `eleven_flash_v2_5` por streaming.
-- Chave criada pelo `onboard` da CLI da ElevenLabs e gravada no `.env` (nunca abrir/imprimir o `.env`).
+- Nenhuma. Última concluída: voz com ElevenLabs ([[log/2026-10-30-voz-elevenlabs]]).
 
 ## Feito até agora
 
-- `npx -y @elevenlabs/cli@latest onboard init` / `connect` / `check` rodados; chave final 3cac.
+- 
 
 ## Próximo passo
 
-- Ler as skills da ElevenLabs (pasta temporária), escolher voz britânica masculina,
-  instalar `elevenlabs`, escrever `src/jarvis/tts/`, rodar `onboard check`.
+- Pegar a próxima tarefa do [[00-Indice]] (item 5 exige aprovação da biblioteca de mp3 pelo usuário).
 
 ## Arquivos tocados (ainda sem commit)
 
-- `vault/em-andamento.md`
+- 

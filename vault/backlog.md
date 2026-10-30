@@ -32,7 +32,8 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [ ] 7. STT local: faster-whisper transcrevendo o comando (gravação até silêncio, modelo e idioma configuráveis).
 - [ ] 8. Loop do cérebro: Anthropic SDK com `claude-haiku-5-5`, prompt de sistema com cache, histórico curto, chamada de ferramentas.
 - [ ] 9. Interface de ferramentas: contrato único para tools (e servidores MCP quando fizer sentido); primeira tool simples (ex.: data/hora).
-- [ ] 10. TTS por streaming: ElevenLabs `eleven_flash_v2_5` via WebSocket, tocando no alto-falante conforme os chunks chegam.
+- [x] 10a. TTS por streaming HTTP (PCM 24 kHz, voz Daniel) — `src/jarvis/tts/speaker.py`; falta teste auditivo do usuário.
+- [ ] 10b. Migrar para WebSocket quando o cérebro gerar texto em streaming. Original: TTS por streaming: ElevenLabs `eleven_flash_v2_5` via WebSocket, tocando no alto-falante conforme os chunks chegam.
 - [ ] 11. Serviço principal: orquestrar gatilho → STT → cérebro → TTS em um único processo (gatilho como thread/task).
 - [ ] 12. Escalonamento para `claude-sonnet-5-5` em tarefas que exigem raciocínio mais profundo.
 
