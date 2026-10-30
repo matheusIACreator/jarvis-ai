@@ -8,7 +8,10 @@ version = "0.0.1"
 description = "Personal voice assistant (Iron Man style), native on Windows 11."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "numpy>=2",
+    "sounddevice>=0.5",
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]

@@ -11,7 +11,7 @@ tags: [handoff, memoria]
 Checkpoint vivo da tarefa atual. Atualizar **durante** a sessão, após cada passo relevante,
 para que o outro agente consiga continuar se este ficar sem tokens no meio do trabalho.
 
-- `status: ativo` → nenhuma tarefa em andamento; pegar a próxima do [[00-Indice]].
+- `status: livre` → nenhuma tarefa em andamento; pegar a próxima do [[00-Indice]].
 - `status: ativo` → existe tarefa em andamento; continuar a partir do "Próximo passo".
 
 ## Tarefa
@@ -25,10 +25,13 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 ## Feito até agora
 
 - Biblioteca aprovada; tarefa marcada como ativa.
+- `sounddevice 0.5.6` + `numpy 2.5.4` instalados e no `pyproject.toml`.
+- `microphone.py` e `tests/test_microphone.py` prontos; 15 testes passando.
+- Captura real de 2 s no microfone Realtek a 16 kHz: OK, sem blocos descartados.
 
 ## Próximo passo
 
-- `pip install sounddevice numpy`, adicionar ao `pyproject.toml`, escrever módulo e testes.
+- Fechar a sessão (log, índice, backlog, decisão 0009) e começar o item 4 (detector de palmas).
 
 ## Arquivos tocados (ainda sem commit)
 
