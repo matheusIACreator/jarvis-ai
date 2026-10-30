@@ -1,7 +1,7 @@
 ---
 tipo: indice
 data: 2026-10-30
-atualizado-por: claude-code
+atualizado-por: codex
 tags: [indice, jarvis]
 ---
 
@@ -20,6 +20,7 @@ tags: [indice, jarvis]
 - [ ] Fase 2 — notificações e "me chama" via bot do Telegram
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
+- Revisão documental por Codex em 2026-10-30: estado e pendências conferidos; sem implementação nesta sessão.
 
 ## Próxima tarefa
 
@@ -44,7 +45,7 @@ tags: [indice, jarvis]
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-30-troca-entre-agentes|2026-10-30 — Troca entre agentes]]
+- [[log/2026-10-30-verificacao-estado|2026-10-30 — Verificação do estado do projeto]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]

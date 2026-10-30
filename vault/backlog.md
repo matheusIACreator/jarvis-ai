@@ -8,6 +8,11 @@ tags: [backlog, planejamento]
 
 Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sessão.
 
+## Revisão documental
+
+- [x] Resumo do estado do projeto por Codex em 2026-10-30; pendências técnicas mantidas conforme [[00-Indice]] e [[log/2026-10-30-verificacao-estado]].
+- [ ] Registrar em commit as alterações desta revisão; a sessão não tem permissão de escrita em `.git`.
+
 ## Infra dos agentes
 
 - [x] Checkpoint vivo em `em-andamento.md` e protocolo de troca no `AGENTS.md`.
