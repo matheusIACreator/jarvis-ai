@@ -23,7 +23,7 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 ## Fase 1 — MVP (palmas → música → saudação → comando → resposta)
 
 - [x] 1. Ambiente de desenvolvimento: `.venv` com Python 3.12, `pip install -e ".[dev]"`, pytest configurado, `import jarvis` funcionando no PowerShell.
-- [ ] 2. Configuração: carregar variáveis do `.env` em um módulo `jarvis.config` (caminhos com `pathlib`, falha clara se faltar chave).
+- [x] 2. Configuração: carregar variáveis do `.env` em um módulo `jarvis.config` (caminhos com `pathlib`, falha clara se faltar chave).
 - [ ] 3. Captura de microfone: stream de áudio contínuo do microfone do notebook (escolher biblioteca e pedir aprovação antes de instalar).
 - [ ] 4. Detector de palmas duplas: detecção de picos de energia + janela de tempo entre as duas palmas; testes com sinais sintéticos.
 - [ ] 5. Áudio de abertura: tocar o arquivo de `STARTUP_AUDIO_PATH` ao disparar o gatilho (sem travar o loop principal).

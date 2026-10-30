@@ -2,7 +2,7 @@
 tipo: em-andamento
 data: 2026-10-30
 agente: claude-code
-status: ativo
+status: livre
 tags: [handoff, memoria]
 ---
 
@@ -16,21 +16,16 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- Item 2 do [[backlog]]: módulo `jarvis.config` que carrega o `.env`.
-- Plano: parser próprio de `.env` (sem dependência nova), dataclass `Config` imutável,
-  `ConfigError` listando todas as chaves faltando, variáveis do ambiente real têm prioridade
-  sobre o `.env`, caminhos relativos resolvidos a partir da raiz do projeto com `pathlib`.
-- Obrigatórias na Fase 1: `ANTHROPIC_API_KEY`, `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`.
-  Telegram opcional (Fase 2). Valores de exemplo (`your-...`) contam como ausentes.
+- Nenhuma. Última concluída: módulo `jarvis.config` ([[log/2026-10-30-modulo-config]]).
 
 ## Feito até agora
 
-- Protocolo de início lido; tarefa marcada como ativa.
+- 
 
 ## Próximo passo
 
-- Escrever `src/jarvis/config.py` e `tests/test_config.py`, rodar `pytest`.
+- Pegar a próxima tarefa do [[00-Indice]] (item 3 exige aprovação da biblioteca de áudio pelo usuário).
 
 ## Arquivos tocados (ainda sem commit)
 
-- `vault/em-andamento.md`
+- 
