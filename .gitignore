@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environment
+.venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Audio assets (user-provided, never committed)
+assets/audio/*
+!assets/audio/.gitkeep
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.m4a
+
+# Obsidian local state
+vault/.obsidian/workspace*.json
+vault/.obsidian/cache
+
+# OS / editors
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
