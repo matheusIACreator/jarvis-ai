@@ -17,8 +17,8 @@ DEFAULT_STARTUP_AUDIO = Path("assets") / "audio" / "startup.mp3"
 
 REQUIRED_KEYS = ("ANTHROPIC_API_KEY", "ELEVENLABS_API_KEY")
 
-# ElevenLabs "Daniel": British male, formal broadcaster tone.
-DEFAULT_VOICE_ID = "onwK4e9ZLuTAKqWW03F9"
+# ElevenLabs "George": mature British male, warm storyteller (premade, works on the free plan).
+DEFAULT_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"
 
 # Values copied unchanged from .env.example start with this prefix.
 PLACEHOLDER_PREFIX = "your-"

@@ -21,7 +21,7 @@ tags: [indice, jarvis]
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas e voz ElevenLabs prontos (28 testes passando).
-- Voz: Daniel (britânico), `eleven_flash_v2_5` em streaming; chave no `.env`. Falta ouvir o teste (`scripts/say.py`).
+- Voz: George (britânico maduro), `eleven_flash_v2_5` em streaming; testada e aprovada pelo usuário.
 - Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
 - Falta o usuário criar o `.env` a partir do `.env.example`.
 - Troca entre agentes funcionando: Codex CLI instalado; `scripts/agent.ps1` faz commit pelo Codex.
@@ -45,13 +45,13 @@ tags: [indice, jarvis]
 - [[decisoes/0007-python-3-12|0007 — Python 3.12]]
 - [[decisoes/0008-config-sem-dependencia|0008 — Configuração sem dependência externa]]
 - [[decisoes/0009-audio-sounddevice-e-palmas-por-pico|0009 — Áudio com sounddevice e palmas por pico]]
-- [[decisoes/0010-voz-daniel-e-streaming-http|0010 — Voz Daniel e streaming HTTP em PCM]]
+- [[decisoes/0010-voz-daniel-e-streaming-http|0010 — Voz George e streaming HTTP em PCM]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-30-voz-elevenlabs|2026-10-30 — Voz com ElevenLabs]]
+- [[log/2026-10-30-troca-voz-george|2026-10-30 — Troca da voz para George]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]

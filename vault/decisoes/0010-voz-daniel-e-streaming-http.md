@@ -1,14 +1,14 @@
 ---
 tipo: decisao
 numero: 0010
-titulo: Voz Daniel e streaming HTTP em PCM
+titulo: Voz George e streaming HTTP em PCM
 status: aceita
 data: 2026-10-30
 agente: claude-code
 tags: [decisao, tts, elevenlabs, fase-1]
 ---
 
-# 0010 — Voz Daniel e streaming HTTP em PCM
+# 0010 — Voz George e streaming HTTP em PCM
 
 ## Contexto
 
@@ -18,9 +18,11 @@ tags: [decisao, tts, elevenlabs, fase-1]
 
 ## Decisão
 
-- Voz padrão **Daniel** (`onwK4e9ZLuTAKqWW03F9`): britânico, tom formal de locutor, o mais "mordomo".
-  Alternativas na conta: George (`JBFqnCBsd6RMkjVDRZzb`, caloroso) e Clyde (`wyWA56cQNU2KqUW4eCsI`, grave).
-  Trocar via `ELEVENLABS_VOICE_ID` no `.env`.
+- Voz padrão **George** (`JBFqnCBsd6RMkjVDRZzb`): britânico, maduro, caloroso (atualizado em 2026-10-30).
+  - Daniel (`onwK4e9ZLuTAKqWW03F9`) foi o primeiro padrão; usuário achou jovem demais.
+  - Oliver (biblioteca, `L1aJrPa7pLJEyYlh3Ilq`) foi o preferido, mas vozes da biblioteca exigem plano pago
+    (erro 402 `paid_plan_required`). Possível volta se o usuário assinar o Creator.
+  - Trocar via `ELEVENLABS_VOICE_ID` no `.env`.
 - `eleven_flash_v2_5` por **streaming HTTP** (`text_to_speech.stream`) em `pcm_24000`, tocado direto
   com `sounddevice` conforme os chunks chegam. Sem decodificar MP3, sem `ffplay`.
 - O `.env` continua carregado pelo `jarvis.config` (não pelo `python-dotenv`); a chave vai para o SDK explicitamente.
