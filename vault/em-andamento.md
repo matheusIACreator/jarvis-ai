@@ -12,7 +12,7 @@ Checkpoint vivo da tarefa atual. Atualizar **durante** a sessão, após cada pas
 para que o outro agente consiga continuar se este ficar sem tokens no meio do trabalho.
 
 - `status: livre` → nenhuma tarefa em andamento; pegar a próxima do [[00-Indice]].
-- `status: livre` → existe tarefa em andamento; continuar a partir do "Próximo passo".
+- `status: ativo` → existe tarefa em andamento; continuar a partir do "Próximo passo".
 
 ## Tarefa
 
