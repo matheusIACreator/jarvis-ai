@@ -8,6 +8,12 @@ tags: [backlog, planejamento]
 
 Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sessão.
 
+## Infra dos agentes
+
+- [x] Checkpoint vivo em `em-andamento.md` e protocolo de troca no `AGENTS.md`.
+- [x] Script `scripts/agent.ps1` com fallback Claude Code → Codex.
+- [ ] Instalar o Codex CLI, fazer login e testar o fallback de ponta a ponta.
+
 ## Fase 1 — MVP (palmas → música → saudação → comando → resposta)
 
 - [ ] 1. Ambiente de desenvolvimento: `.venv` com Python 3.11+, `pip install -e .`, pytest configurado, `import jarvis` funcionando no PowerShell.

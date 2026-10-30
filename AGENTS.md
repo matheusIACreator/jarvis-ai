@@ -39,8 +39,15 @@ src/jarvis/
 **START of every session:**
 
 1. Read `vault/00-Indice.md`.
-2. Read the most recent file in `vault/log/` (sort by file name, the date prefix makes it chronological).
-3. Read any note in `vault/decisoes/` relevant to the task.
+2. Read `vault/em-andamento.md`. If `status: ativo`, a task was interrupted (possibly because the other agent ran out of tokens): continue it from "Próximo passo" instead of starting something new.
+3. Read the most recent file in `vault/log/` (sort by file name, the date prefix makes it chronological).
+4. Read any note in `vault/decisoes/` relevant to the task.
+
+**DURING every session (handoff safety):**
+
+- Either agent can stop abruptly when it runs out of tokens, so never keep progress only in your context.
+- When you start a task, set `vault/em-andamento.md` to `status: ativo` with the task, your agent name and the next step.
+- After every meaningful step, update "Feito até agora", "Próximo passo" and "Arquivos tocados", and make a small commit (`wip:` prefix is fine for work in progress).
 
 **END of every session:**
 
@@ -48,7 +55,10 @@ src/jarvis/
 2. Update `vault/00-Indice.md` (current state + next task).
 3. Update `vault/backlog.md`.
 4. For any non-trivial choice made, create a decision note in `vault/decisoes/` using `vault/_modelos/modelo-decisao.md` (next free number, `NNNN-short-slug.md`).
-5. Commit.
+5. If the task is finished, reset `vault/em-andamento.md` to `status: livre`; otherwise leave it `ativo` with an accurate next step.
+6. Commit.
+
+**Switching agents:** `scripts/agent.ps1 "<task>"` runs Claude Code headless and hands the same task to Codex if Claude hits its usage limit. In interactive sessions the switch is manual: open the other agent and say "continue the task in progress".
 
 **Log rules:**
 

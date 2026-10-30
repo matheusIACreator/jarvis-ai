@@ -27,3 +27,10 @@ Two coding agents (Claude Code and Codex) work on this repo. They share memory t
 Obsidian-compatible vault in `vault/` (plain Markdown, versioned with git, written in pt-BR).
 Each session starts by reading `vault/00-Indice.md` and the latest log, and ends by writing a
 new log, updating the index and backlog, and recording decisions. See `AGENTS.md` for the full rules.
+
+During a session the active agent keeps `vault/em-andamento.md` up to date, so if it runs out of
+tokens the other agent can continue. To run a task with automatic fallback from Claude Code to Codex:
+
+```powershell
+.\scripts\agent.ps1 "Do backlog item 1"
+```

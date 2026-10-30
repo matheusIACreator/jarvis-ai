@@ -23,6 +23,7 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
+- Pendente do usuário: instalar o Codex CLI e testar `scripts/agent.ps1 -Agent codex` (ver [[decisoes/0006-troca-entre-agentes]]).
 - Configurar o ambiente de desenvolvimento: criar a `.venv` com Python 3.11+, instalar o pacote em modo editável (`pip install -e .`), configurar pytest e validar que `import jarvis` funciona no PowerShell.
 - Detalhes no [[backlog]].
 
@@ -37,9 +38,13 @@ tags: [indice, jarvis]
 - [[decisoes/0003-tudo-nativo-no-windows|0003 — Tudo nativo no Windows]]
 - [[decisoes/0004-memoria-compartilhada-obsidian|0004 — Memória compartilhada no Obsidian]]
 - [[decisoes/0005-primeira-versao-telegram|0005 — Primeira versão com Telegram]]
+- [[decisoes/0006-troca-entre-agentes|0006 — Troca entre agentes]]
+
+### Tarefa em andamento
+- [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-30-esqueleto-inicial|2026-10-30 — Esqueleto inicial]]
+- [[log/2026-10-30-troca-entre-agentes|2026-10-30 — Troca entre agentes]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
