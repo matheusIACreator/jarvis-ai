@@ -20,13 +20,14 @@ tags: [indice, jarvis]
 - [ ] Fase 2 — notificações e "me chama" via bot do Telegram
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
-- Fase 1 em andamento: ambiente pronto (`.venv` Python 3.12, pytest) e módulo `jarvis.config` feito (11 testes passando).
+- Fase 1 em andamento: ambiente, `jarvis.config`, captura de microfone e detector de palmas prontos (23 testes passando).
+- Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
 - Falta o usuário criar o `.env` a partir do `.env.example`.
 - Troca entre agentes funcionando: Codex CLI instalado; `scripts/agent.ps1` faz commit pelo Codex.
 
 ## Próxima tarefa
 
-- Item 3 do [[backlog]]: captura de microfone. Antes de instalar, pedir aprovação do usuário para a biblioteca (sugestão: `sounddevice`).
+- Item 5 do [[backlog]]: tocar o áudio de abertura. Antes de instalar, pedir aprovação do usuário para a biblioteca de mp3.
 
 ## Links
 
@@ -42,12 +43,13 @@ tags: [indice, jarvis]
 - [[decisoes/0006-troca-entre-agentes|0006 — Troca entre agentes]]
 - [[decisoes/0007-python-3-12|0007 — Python 3.12]]
 - [[decisoes/0008-config-sem-dependencia|0008 — Configuração sem dependência externa]]
+- [[decisoes/0009-audio-sounddevice-e-palmas-por-pico|0009 — Áudio com sounddevice e palmas por pico]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-30-modulo-config|2026-10-30 — Módulo de configuração]]
+- [[log/2026-10-30-microfone-e-palmas|2026-10-30 — Microfone e detector de palmas]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
