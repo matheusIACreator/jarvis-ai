@@ -27,12 +27,13 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 ## Feito até agora
 
 - Tarefa marcada como ativa.
-- Bot é @mmasago_jarvis_bot; `getUpdates` vazio (mensagem do usuário não chegou); ouvindo nova mensagem.
+- Bot é @mmasago_jarvis_bot. O usuário só consegue clicar em "Start Bot" (`/start`), e isso basta.
+- `TELEGRAM_CHAT_ID` obtido via `getUpdates` e gravado no `.env`; Telegram habilitado na configuração.
 - Escritos `confirmation.py`, `interfaces/telegram.py`, `tools/telegram.py`, ligação no `app.py`/`conversation.py`, testes (111 passando).
 
 ## Próximo passo
 
-- Obter o chat id (usuário reenviar mensagem ao bot), gravar `TELEGRAM_CHAT_ID` no `.env`, testar envio real, fechar a sessão.
+- Com autorização do usuário: enviar mensagem de teste real; depois fechar a sessão (log, decisão 0015, índice, backlog).
 
 ## Arquivos tocados (ainda sem commit)
 
