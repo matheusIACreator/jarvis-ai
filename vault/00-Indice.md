@@ -23,7 +23,7 @@ tags: [indice, jarvis]
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (84 testes passando).
 - Sonnet 5.5 como advisor em perguntas difíceis; sessão encerra pela ferramenta `end_conversation`.
 - Fase 2 em andamento: envio para o Telegram do usuário com confirmação por voz decidida pelo código.
-- Gatilhos: palmas duplas (mínimo 0,08) ou "Hey Jarvis" (openWakeWord). 118 testes passando.
+- Gatilhos: palmas duplas (mínimo 0,08) ou "Hey Jarvis" (openWakeWord). 119 testes passando.
 - Música de abertura: "Back in Black" a partir do 6º s, 10 s.
 - Testado com palmas reais em 2026-10-31: palmas → música → saudação OK. Conversa completa testada pelo usuário (perguntas seguidas, ferramenta de data, despedida).
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
@@ -64,7 +64,7 @@ tags: [indice, jarvis]
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-31-palmas-e-hey-jarvis|2026-10-31 — Palmas e "Hey Jarvis"]]
+- [[log/2026-10-31-confirmacao-no-historico|2026-10-31 — Confirmação registrada no histórico]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]

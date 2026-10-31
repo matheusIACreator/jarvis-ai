@@ -24,6 +24,8 @@ tags: [decisao, seguranca, telegram, fase-2]
   - começa com negação ("no", "cancel", "wait"...) → cancela;
   - qualquer outra coisa → cancela e a fala segue para o cérebro como pedido novo.
 - Ação pendente não passa para a próxima sessão.
+- Resultado da confirmação (feito / recusado / falhou) vai para o histórico como mensagem `role: "system"`
+  entre a fala do usuário e a resposta (atualizado em 2026-10-31: sem isso o modelo duvidava do próprio "Sent").
 - `send_telegram_message`: só para o chat do próprio usuário (`TELEGRAM_CHAT_ID`); não envia a terceiros.
 - Cliente do Telegram com `urllib` (biblioteca padrão); o token nunca aparece em erros, logs ou `repr`.
 - Bot: @mmasago_jarvis_bot. Chat id obtido por `getUpdates` após o usuário clicar em "Start Bot".
