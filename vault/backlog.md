@@ -26,7 +26,7 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [x] 2. Configuração: carregar variáveis do `.env` em um módulo `jarvis.config` (caminhos com `pathlib`, falha clara se faltar chave).
 - [x] 3. Captura de microfone: stream de áudio contínuo do microfone do notebook (escolher biblioteca e pedir aprovação antes de instalar).
 - [x] 4. Detector de palmas duplas: detecção de picos de energia + janela de tempo entre as duas palmas; testes com sinais sintéticos.
-- [ ] 4b. Validar limiares das palmas com palmas reais (`scripts/clap_monitor.py`) — precisa do usuário.
+- [x] 4b. Limiares das palmas validados com palmas reais em 2026-10-31 (padrões mantidos).
 - [x] 7b. Limiares de fala validados com a voz real do usuário em 2026-10-31 (2,2 s de áudio, 1,8 s para transcrever, texto exato).
 - [x] 5. Áudio de abertura: tocar o arquivo de `STARTUP_AUDIO_PATH` ao disparar o gatilho (sem travar o loop principal).
 - [x] 6. Saudação: frase curta falada após a música.
