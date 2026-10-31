@@ -12,11 +12,12 @@ from datetime import datetime
 
 import anthropic
 
-from jarvis.brain.assistant import Assistant
+from jarvis.brain.assistant import TEXT_CHAT_PROMPT, Assistant
 from jarvis.config import ConfigError, load_config
 from jarvis.confirmation import ConfirmationGate
 from jarvis.conversation import FILLER, Conversation, greeting_for, with_filler
 from jarvis.interfaces.telegram import TelegramBot
+from jarvis.interfaces.telegram_chat import TelegramChat
 from jarvis.stt.recorder import record_utterance
 from jarvis.stt.transcriber import Transcriber
 from jarvis.tools.base import ToolRegistry
@@ -42,17 +43,21 @@ def main() -> None:
     speaker = Speaker(config.elevenlabs_api_key, config.elevenlabs_voice_id)
     session_over = threading.Event()
     gate = ConfirmationGate()
+    client = anthropic.Anthropic(api_key=config.anthropic_api_key)
     tools = [make_clock_tool(), make_end_conversation_tool(session_over.set)]
+    telegram_chat = None
     if config.telegram_enabled:
         bot = TelegramBot(config.telegram_bot_token)
         chat_id = config.telegram_chat_id
         tools.append(make_telegram_tool(gate, lambda text: bot.send_message(chat_id, text)))
+        # Text chat gets its own conversation, separate from voice sessions.
+        text_assistant = Assistant(
+            client=client, tools=ToolRegistry([make_clock_tool()]), system_prompt=TEXT_CHAT_PROMPT
+        )
+        telegram_chat = TelegramChat(bot, chat_id, lambda text: safe_reply(text_assistant, text))
     else:
         print("Telegram not configured (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID); messaging is off.")
-    assistant = Assistant(
-        client=anthropic.Anthropic(api_key=config.anthropic_api_key),
-        tools=ToolRegistry(tools),
-    )
+    assistant = Assistant(client=client, tools=ToolRegistry(tools))
     transcriber = Transcriber(config.whisper_model, config.whisper_language)
     music = FilePlayer(
         config.startup_audio_path, config.startup_audio_seconds, config.startup_audio_start
@@ -71,14 +76,12 @@ def main() -> None:
     if not music.load():
         print(f"No startup music at {config.startup_audio_path}; Jarvis will just greet.")
 
+    if telegram_chat:
+        telegram_chat.start()
+        print("Telegram chat is on: message the bot to talk to Jarvis.")
+
     def think(text: str) -> str:
-        try:
-            return assistant.reply(text)
-        except anthropic.APIConnectionError:
-            return TROUBLE_CONNECTING
-        except anthropic.APIError as exc:
-            print(f"(Anthropic API error: {exc})")
-            return TROUBLE_GENERIC
+        return safe_reply(assistant, text)
 
     def confirm(text: str) -> str | None:
         resolution = gate.resolve(text)
@@ -124,6 +127,17 @@ def main() -> None:
                 except Exception as exc:  # keep the service alive after a failed session
                     print(f"(Session error: {type(exc).__name__}: {exc})")
                 mic.drain()
+
+
+def safe_reply(assistant: Assistant, text: str) -> str:
+    """Ask the brain, turning API failures into a short apology instead of an exception."""
+    try:
+        return assistant.reply(text)
+    except anthropic.APIConnectionError:
+        return TROUBLE_CONNECTING
+    except anthropic.APIError as exc:
+        print(f"(Anthropic API error: {exc})")
+        return TROUBLE_GENERIC
 
 
 def wait_for_trigger(mic, clap: ClapDetector, wake_word: WakeWordDetector | None) -> str:

@@ -27,14 +27,14 @@ class TelegramBot:
     def __repr__(self) -> str:
         return "TelegramBot(token=***)"
 
-    def call(self, method: str, **params: Any) -> Any:
+    def call(self, method: str, timeout: float | None = None, **params: Any) -> Any:
         request = urllib.request.Request(
             f"{API}/bot{self._token}/{method}",
             data=json.dumps(params).encode("utf-8"),
             headers={"Content-Type": "application/json"},
         )
         try:
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            with urllib.request.urlopen(request, timeout=timeout or self.timeout) as response:
                 body = json.load(response)
         except urllib.error.HTTPError as exc:
             description = _description(exc)
@@ -49,6 +49,16 @@ class TelegramBot:
         if not text.strip():
             raise ValueError("Message text is empty.")
         self.call("sendMessage", chat_id=chat_id, text=text[:MAX_MESSAGE_LENGTH])
+
+    def send_typing(self, chat_id: str | int) -> None:
+        self.call("sendChatAction", chat_id=chat_id, action="typing")
+
+    def get_updates(self, offset: int | None = None, poll_seconds: int = 25) -> list[dict]:
+        """Long-poll for new updates; returns as soon as one arrives or after `poll_seconds`."""
+        params: dict[str, Any] = {"timeout": poll_seconds, "allowed_updates": ["message"]}
+        if offset is not None:
+            params["offset"] = offset
+        return self.call("getUpdates", timeout=poll_seconds + 10, **params)
 
 
 def _description(exc: urllib.error.HTTPError) -> str:
