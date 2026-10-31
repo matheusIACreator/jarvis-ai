@@ -2,7 +2,7 @@
 tipo: em-andamento
 data: 2026-10-31
 agente: claude-code
-status: livre
+status: ativo
 tags: [handoff, memoria]
 ---
 
@@ -16,16 +16,19 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- Nenhuma. Última concluída: Telegram e confirmação ([[log/2026-10-31-telegram-e-confirmacao]]).
+- (a) Palmas pararam de disparar no serviço (relato do usuário em 2026-10-31). Diagnóstico com gravação de 60 s
+  registrando pico, limiar, piso de ruído e estado do detector.
+- (b) Gatilho de voz alternativo: **"Hey Jarvis" com openWakeWord** (aprovado pelo usuário; modelo pré-treinado
+  `hey_jarvis`; palmas continuam como gatilho principal).
 
 ## Feito até agora
 
-- 
+- Usuário aprovou openWakeWord; gravação de diagnóstico das palmas iniciada.
 
 ## Próximo passo
 
-- Pegar a próxima tarefa do [[00-Indice]].
+- Analisar a gravação e corrigir o detector; instalar `openwakeword`, criar `trigger/wake_word.py`, ligar no `app.py`.
 
 ## Arquivos tocados (ainda sem commit)
 
-- 
+- `vault/em-andamento.md`
