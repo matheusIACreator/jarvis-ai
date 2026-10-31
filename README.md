@@ -6,7 +6,7 @@ A personal voice assistant (Iron Man style) for a single user, running natively 
 
 ## Flow
 
-1. A double hand-clap is detected from the laptop microphone.
+1. A double hand-clap (or the wake word "Hey Jarvis") is detected from the laptop microphone.
 2. A local startup track plays, then Jarvis greets the user.
 3. The spoken command is transcribed locally (faster-whisper).
 4. The Anthropic API (Haiku by default, Sonnet on demand) decides the reply and calls tools.
@@ -31,7 +31,7 @@ Put your startup music at `assets/audio/startup.mp3` (never committed). Without 
 .\.venv\Scripts\python.exe -m jarvis
 ```
 
-Clap twice, wait for the greeting, then speak. Ask follow-ups without clapping again; stay silent
+Clap twice (or say "Hey Jarvis"), wait for the greeting, then speak. Ask follow-ups without clapping again; stay silent
 or say "that's all" to end the session. Ctrl+C stops the service.
 
 With `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` set, you can say "send me a Telegram message

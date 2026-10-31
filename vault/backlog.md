@@ -40,6 +40,11 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [x] 11. Serviço principal: orquestrar gatilho → STT → cérebro → TTS em um único processo (gatilho como thread/task).
 - [x] 12. (via advisor, [[decisoes/0014-sonnet-como-advisor]]) Escalonamento para `claude-sonnet-5-5` em tarefas que exigem raciocínio mais profundo.
 
+## Fase 1 — extras
+
+- [x] Palavra de ativação "Hey Jarvis" como alternativa às palmas ([[decisoes/0016-palavra-de-ativacao]]).
+- [x] Palmas mais sensíveis (mínimo 0,08) após diagnóstico com palmas reais.
+
 ## Fase 2 — Telegram
 
 - [x] 13. Bot do Telegram: enviar mensagem para `TELEGRAM_CHAT_ID` como tool do cérebro.

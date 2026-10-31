@@ -22,7 +22,8 @@ tags: [indice, jarvis]
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (84 testes passando).
 - Sonnet 5.5 como advisor em perguntas difíceis; sessão encerra pela ferramenta `end_conversation`.
-- Fase 2 em andamento: envio para o Telegram do usuário com confirmação por voz decidida pelo código (111 testes).
+- Fase 2 em andamento: envio para o Telegram do usuário com confirmação por voz decidida pelo código.
+- Gatilhos: palmas duplas (mínimo 0,08) ou "Hey Jarvis" (openWakeWord). 118 testes passando.
 - Música de abertura: "Back in Black" a partir do 6º s, 10 s.
 - Testado com palmas reais em 2026-10-31: palmas → música → saudação OK. Conversa completa testada pelo usuário (perguntas seguidas, ferramenta de data, despedida).
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
@@ -33,8 +34,8 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
-- Usuário: testar o envio por voz ("send me a Telegram message saying buy milk" → "yes").
-- Item 16 do [[backlog]] ("me chama" ao fim de tarefa longa) ou item 15 (comandos pelo Telegram).
+- Usuário: testar palmas e "Hey Jarvis" no serviço; testar envio ao Telegram por voz.
+- Item 15 do [[backlog]] (comandos pelo Telegram) ou item 16 ("me chama").
 
 ## Links
 
@@ -57,12 +58,13 @@ tags: [indice, jarvis]
 - [[decisoes/0013-fluxo-da-sessao-de-voz|0013 — Fluxo da sessão de voz]]
 - [[decisoes/0014-sonnet-como-advisor|0014 — Sonnet como advisor e encerramento pela ferramenta]]
 - [[decisoes/0015-confirmacao-e-telegram|0015 — Confirmação por voz e Telegram]]
+- [[decisoes/0016-palavra-de-ativacao|0016 — "Hey Jarvis" e palmas mais sensíveis]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-31-telegram-e-confirmacao|2026-10-31 — Telegram e confirmação]]
+- [[log/2026-10-31-palmas-e-hey-jarvis|2026-10-31 — Palmas e "Hey Jarvis"]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
