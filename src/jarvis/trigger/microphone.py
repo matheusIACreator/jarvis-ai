@@ -88,6 +88,16 @@ class MicrophoneStream:
             self._stream.close()
             self._stream = None
 
+    def drain(self) -> int:
+        """Discard queued blocks (e.g. audio captured while Jarvis was talking)."""
+        count = 0
+        while True:
+            try:
+                self._blocks.get_nowait()
+                count += 1
+            except queue.Empty:
+                return count
+
     def read(self, timeout: float | None = None) -> np.ndarray:
         """Return the next block; raises `queue.Empty` if none arrives within `timeout`."""
         return self._blocks.get(timeout=timeout)

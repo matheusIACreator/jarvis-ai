@@ -59,8 +59,18 @@ class Speaker:
 
     def speak(self, text: str) -> None:
         """Say `text` on the default output device; blocks until playback ends."""
+        self.play(self.stream_pcm(text))
+
+    def synthesize(self, text: str) -> bytes:
+        """Generate the whole clip up front, e.g. while something else is playing."""
+        return b"".join(self.stream_pcm(text))
+
+    @staticmethod
+    def play(pcm: bytes | Iterable[bytes]) -> None:
+        """Play 24 kHz mono int16 PCM, given whole or as a stream of whole-frame chunks."""
         import sounddevice as sd
 
+        chunks = [pcm] if isinstance(pcm, bytes) else pcm
         with sd.RawOutputStream(samplerate=SAMPLE_RATE, channels=1, dtype="int16") as out:
-            for chunk in self.stream_pcm(text):
+            for chunk in chunks:
                 out.write(chunk)

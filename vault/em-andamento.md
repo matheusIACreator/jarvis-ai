@@ -27,10 +27,11 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 ## Feito até agora
 
 - Item 7b validado pelo usuário; tarefa marcada como ativa.
+- Escritos `tts/audio_file.py`, `conversation.py`, `app.py`, `__main__.py`; `Speaker.synthesize/play`, `MicrophoneStream.drain`, `STARTUP_AUDIO_SECONDS`. 74 testes passando.
 
 ## Próximo passo
 
-- Escrever `tts/audio_file.py` + testes.
+- Teste de fumaça de `python -m jarvis` (carrega e espera palmas), depois fechar a sessão (log, decisão 0013, índice, backlog, README).
 
 ## Arquivos tocados (ainda sem commit)
 
