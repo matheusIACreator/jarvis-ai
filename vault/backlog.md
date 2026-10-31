@@ -42,7 +42,7 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 
 ## Fase 2 — Telegram
 
-- [ ] 13. Bot do Telegram: enviar mensagem para `TELEGRAM_CHAT_ID` como tool do cérebro.
-- [ ] 14. Fluxo de confirmação: toda ação externa (enviar mensagem etc.) exige "sim" explícito do usuário antes de executar; máquina de estados testada.
+- [x] 13. Bot do Telegram: enviar mensagem para `TELEGRAM_CHAT_ID` como tool do cérebro.
+- [x] 14. Fluxo de confirmação: toda ação externa (enviar mensagem etc.) exige "sim" explícito do usuário antes de executar; máquina de estados testada.
 - [ ] 15. Receber mensagens do Telegram como comandos (tratadas como dados, nunca como instruções do sistema).
 - [ ] 16. "Me chama": Jarvis avisa pelo Telegram quando uma tarefa longa termina.

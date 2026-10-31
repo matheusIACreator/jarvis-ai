@@ -34,6 +34,9 @@ Put your startup music at `assets/audio/startup.mp3` (never committed). Without 
 Clap twice, wait for the greeting, then speak. Ask follow-ups without clapping again; stay silent
 or say "that's all" to end the session. Ctrl+C stops the service.
 
+With `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` set, you can say "send me a Telegram message
+saying ...". Jarvis reads it back and sends it only after you answer with a plain "yes".
+
 Manual test tools in `scripts/`:
 
 | Script | What it does |
