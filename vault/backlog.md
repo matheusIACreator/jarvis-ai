@@ -31,7 +31,8 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [ ] 6. Saudação: frase curta falada após a música.
 - [ ] 7. STT local: faster-whisper transcrevendo o comando (gravação até silêncio, modelo e idioma configuráveis).
 - [x] 8. Loop do cérebro: Anthropic SDK com `claude-haiku-5-5`, prompt de sistema com cache, histórico curto, chamada de ferramentas.
-- [ ] 8b. Testar o cérebro na API real (conta sem créditos em 2026-10-31) e conferir o cache.
+- [x] 8b. Cérebro testado na API real pelo usuário em 2026-10-31 (créditos adicionados; ferramenta de data/hora e voz OK).
+- [ ] 8c. Conferir `cache_read_input_tokens` quando prompt + ferramentas passarem de 512 tokens.
 - [x] 9. Interface de ferramentas: contrato único para tools (e servidores MCP quando fizer sentido); primeira tool simples (ex.: data/hora).
 - [x] 10a. TTS por streaming HTTP (PCM 24 kHz, voz George) — `src/jarvis/tts/speaker.py`; testado pelo usuário.
 - [ ] 10b. Migrar para WebSocket quando o cérebro gerar texto em streaming. Original: TTS por streaming: ElevenLabs `eleven_flash_v2_5` via WebSocket, tocando no alto-falante conforme os chunks chegam.

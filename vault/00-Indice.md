@@ -21,7 +21,7 @@ tags: [indice, jarvis]
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs e núcleo do cérebro prontos (42 testes passando).
-- Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes). **Conta Anthropic sem créditos**: teste real pendente.
+- Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
 - Voz: George (britânico maduro), `eleven_flash_v2_5` em streaming; testada e aprovada pelo usuário.
 - Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
 - Falta o usuário criar o `.env` a partir do `.env.example`.
@@ -29,7 +29,6 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
-- Usuário: adicionar créditos na Anthropic e testar `scripts/chat.py --speak`.
 - Depois: item 7 do [[backlog]] (STT com faster-whisper; pedir aprovação da dependência) e item 11 (serviço principal).
 
 ## Links
