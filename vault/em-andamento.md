@@ -25,10 +25,11 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 ## Feito até agora
 
 - Tarefa marcada como ativa.
+- `anthropic 2.3.0` instalado. Escritos `tools/base.py`, `tools/clock.py`, `brain/assistant.py`, `scripts/chat.py` e testes (42 passando).
 
 ## Próximo passo
 
-- Ler a skill `claude-api`, escrever `tools/base.py`, `tools/clock.py`, `brain/loop.py` e testes com cliente falso.
+- Teste real na API (uma pergunta de data/hora), depois fechar a sessão (log, decisão 0011, índice, backlog).
 
 ## Arquivos tocados (ainda sem commit)
 
