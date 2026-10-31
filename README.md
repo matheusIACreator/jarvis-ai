@@ -2,9 +2,9 @@
 
 A personal voice assistant (Iron Man style) for a single user, running natively on Windows 11.
 
-> Status: skeleton only. No features implemented yet.
+> Status: voice MVP working (clap trigger, startup music, greeting, local speech-to-text, Claude, ElevenLabs voice). Telegram, email and phone come later.
 
-## Planned flow
+## Flow
 
 1. A double hand-clap is detected from the laptop microphone.
 2. A local startup track plays, then Jarvis greets the user.
@@ -22,6 +22,26 @@ pip install -e ".[dev]"
 Copy-Item .env.example .env   # then fill in real values locally
 pytest
 ```
+
+Put your startup music at `assets/audio/startup.mp3` (never committed). Without it, Jarvis just greets.
+
+## Run
+
+```powershell
+.\.venv\Scripts\python.exe -m jarvis
+```
+
+Clap twice, wait for the greeting, then speak. Ask follow-ups without clapping again; stay silent
+or say "that's all" to end the session. Ctrl+C stops the service.
+
+Manual test tools in `scripts/`:
+
+| Script | What it does |
+|---|---|
+| `clap_monitor.py` | Live clap detector levels |
+| `listen.py` | Record one command and print the transcription |
+| `chat.py [--speak]` | Type to the brain, optionally hear the replies |
+| `say.py "text"` | Speak a line with the configured voice |
 
 ## Shared agent memory
 
