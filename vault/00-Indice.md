@@ -22,7 +22,7 @@ tags: [indice, jarvis]
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (74 testes passando).
 - Música de abertura: "Back in Black" a partir do 6º s, 10 s.
-- Testado com palmas reais em 2026-10-31: palmas → música → saudação OK. Conversa após a saudação ainda não exercitada no serviço.
+- Testado com palmas reais em 2026-10-31: palmas → música → saudação OK. Conversa completa testada pelo usuário (perguntas seguidas, ferramenta de data, despedida).
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
 - Voz: George (britânico maduro), `eleven_flash_v2_5` em streaming; testada e aprovada pelo usuário.
 - Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
