@@ -1,4 +1,4 @@
-"""Run only the Telegram chat channel (no microphone or voice). Ctrl+C to stop.
+r"""Run only the Telegram chat channel (no microphone or voice). Ctrl+C to stop.
 
 Run from the repo root:  .\.venv\Scripts\python.exe scripts\telegram_chat.py [minutes]
 """

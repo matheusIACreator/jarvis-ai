@@ -27,14 +27,15 @@ class TelegramBot:
     def __repr__(self) -> str:
         return "TelegramBot(token=***)"
 
-    def call(self, method: str, timeout: float | None = None, **params: Any) -> Any:
+    def call(self, method: str, http_timeout: float | None = None, **params: Any) -> Any:
+        # `http_timeout` is ours; Telegram's own `timeout` parameter (long polling) goes in params.
         request = urllib.request.Request(
             f"{API}/bot{self._token}/{method}",
             data=json.dumps(params).encode("utf-8"),
             headers={"Content-Type": "application/json"},
         )
         try:
-            with urllib.request.urlopen(request, timeout=timeout or self.timeout) as response:
+            with urllib.request.urlopen(request, timeout=http_timeout or self.timeout) as response:
                 body = json.load(response)
         except urllib.error.HTTPError as exc:
             description = _description(exc)
@@ -58,7 +59,7 @@ class TelegramBot:
         params: dict[str, Any] = {"timeout": poll_seconds, "allowed_updates": ["message"]}
         if offset is not None:
             params["offset"] = offset
-        return self.call("getUpdates", timeout=poll_seconds + 10, **params)
+        return self.call("getUpdates", http_timeout=poll_seconds + 10, **params)
 
 
 def _description(exc: urllib.error.HTTPError) -> str:

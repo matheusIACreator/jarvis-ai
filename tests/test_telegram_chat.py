@@ -110,3 +110,22 @@ def test_text_assistant_uses_its_own_prompt():
     assistant = Assistant(client=Client(), tools=ToolRegistry(), system_prompt=TEXT_CHAT_PROMPT)
     assert assistant.reply("hi") == "Hello, sir."
     assert requests[0]["system"][0]["text"] == TEXT_CHAT_PROMPT
+
+
+def test_run_survives_unexpected_errors_and_keeps_polling():
+    logs = []
+
+    class FlakyBot(FakeBot):
+        def get_updates(self, offset=None, poll_seconds=25):
+            self.calls.append(offset)
+            if len(self.calls) <= 2:
+                raise TypeError("unexpected bug")
+            c.stop()
+            return [update(1, "hi")]
+
+    bot = FlakyBot()
+    c = TelegramChat(bot, MY_CHAT, lambda text: "ok", log=logs.append)
+    c._stop.wait = lambda seconds: None  # no real sleeping in tests
+    c.run()
+    assert bot.sent == [("6587507799", "ok")]
+    assert any("unexpected bug" in line for line in logs)

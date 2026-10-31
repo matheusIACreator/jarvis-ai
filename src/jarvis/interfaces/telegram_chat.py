@@ -76,13 +76,13 @@ class TelegramChat:
             skipped = self.skip_backlog()
             if skipped:
                 self.log(f"(Telegram: skipped {skipped} message(s) sent while I was offline)")
-        except TelegramError as exc:
-            self.log(f"(Telegram: {exc})")
+        except Exception as exc:
+            self.log(f"(Telegram: could not skip old messages: {type(exc).__name__}: {exc})")
         while not self._stop.is_set():
             try:
                 self.poll_once()
-            except TelegramError as exc:
-                self.log(f"(Telegram: {exc}; retrying in {RETRY_SECONDS:g} s)")
+            except Exception as exc:  # never let the channel die silently
+                self.log(f"(Telegram: {type(exc).__name__}: {exc}; retrying in {RETRY_SECONDS:g} s)")
                 self._stop.wait(RETRY_SECONDS)
 
     def start(self) -> None:

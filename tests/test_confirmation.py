@@ -146,3 +146,18 @@ def test_bot_error_does_not_leak_token(monkeypatch):
         TelegramBot("123:SECRET").send_message(42, "Hello")
     assert "chat not found" in str(excinfo.value)
     assert "SECRET" not in str(excinfo.value)
+
+
+def test_get_updates_sends_telegram_timeout_and_uses_longer_http_timeout(monkeypatch):
+    seen = []
+
+    def fake_urlopen(request, timeout):
+        seen.append((json.loads(request.data), timeout))
+        return FakeResponse(json.dumps({"ok": True, "result": [{"update_id": 7}]}).encode())
+
+    monkeypatch.setattr(telegram.urllib.request, "urlopen", fake_urlopen)
+    bot = TelegramBot("123:SECRET")
+    assert bot.get_updates(offset=-1, poll_seconds=0) == [{"update_id": 7}]
+    assert bot.get_updates(offset=8) == [{"update_id": 7}]
+    assert seen[0] == ({"timeout": 0, "allowed_updates": ["message"], "offset": -1}, 10)
+    assert seen[1][0]["timeout"] == 25 and seen[1][1] == 35
