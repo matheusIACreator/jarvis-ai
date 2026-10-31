@@ -16,11 +16,12 @@ tags: [indice, jarvis]
 ## Estado atual
 
 - [x] Fase 0 — esqueleto do projeto e vault de memória compartilhada ✔
-- [ ] Fase 1 — MVP: palmas → música → saudação → comando → resposta
+- [x] Fase 1 — MVP: palmas → música → saudação → comando → resposta ✔
 - [ ] Fase 2 — notificações e "me chama" via bot do Telegram
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
-- Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (74 testes passando).
+- Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (84 testes passando).
+- Sonnet 5.5 como advisor em perguntas difíceis; sessão encerra pela ferramenta `end_conversation`.
 - Música de abertura: "Back in Black" a partir do 6º s, 10 s.
 - Testado com palmas reais em 2026-10-31: palmas → música → saudação OK. Conversa completa testada pelo usuário (perguntas seguidas, ferramenta de data, despedida).
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
@@ -31,8 +32,8 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
-- Usuário: conversar após a saudação no `python -m jarvis` (pergunta, pergunta seguinte, "that's all").
-- Depois: item 12 do [[backlog]] (escalonar para Sonnet) ou Fase 2 (Telegram).
+- Fase 2 — Telegram: item 14 do [[backlog]] (máquina de estados de confirmação) e item 13 (enviar mensagem).
+- Usuário precisa criar o bot no @BotFather e pôr `TELEGRAM_BOT_TOKEN` e `TELEGRAM_CHAT_ID` no `.env`.
 
 ## Links
 
@@ -53,12 +54,13 @@ tags: [indice, jarvis]
 - [[decisoes/0011-nucleo-proprio-do-cerebro|0011 — Núcleo próprio do cérebro]]
 - [[decisoes/0012-stt-whisper-small-ingles|0012 — STT com faster-whisper small, só inglês]]
 - [[decisoes/0013-fluxo-da-sessao-de-voz|0013 — Fluxo da sessão de voz]]
+- [[decisoes/0014-sonnet-como-advisor|0014 — Sonnet como advisor e encerramento pela ferramenta]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-31-inicio-da-musica|2026-10-31 — Início da música de abertura]]
+- [[log/2026-10-31-advisor-e-encerramento|2026-10-31 — Advisor e encerramento da sessão]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
