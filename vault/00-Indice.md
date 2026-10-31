@@ -1,6 +1,6 @@
 ---
 tipo: indice
-data: 2026-10-30
+data: 2026-10-31
 atualizado-por: claude-code
 tags: [indice, jarvis]
 ---
@@ -20,7 +20,8 @@ tags: [indice, jarvis]
 - [ ] Fase 2 — notificações e "me chama" via bot do Telegram
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
-- Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas e voz ElevenLabs prontos (28 testes passando).
+- Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs e núcleo do cérebro prontos (42 testes passando).
+- Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes). **Conta Anthropic sem créditos**: teste real pendente.
 - Voz: George (britânico maduro), `eleven_flash_v2_5` em streaming; testada e aprovada pelo usuário.
 - Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
 - Falta o usuário criar o `.env` a partir do `.env.example`.
@@ -28,7 +29,8 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
-- Item 5 do [[backlog]]: tocar o áudio de abertura. Antes de instalar, pedir aprovação do usuário para a biblioteca de mp3.
+- Usuário: adicionar créditos na Anthropic e testar `scripts/chat.py --speak`.
+- Depois: item 7 do [[backlog]] (STT com faster-whisper; pedir aprovação da dependência) e item 11 (serviço principal).
 
 ## Links
 
@@ -46,12 +48,13 @@ tags: [indice, jarvis]
 - [[decisoes/0008-config-sem-dependencia|0008 — Configuração sem dependência externa]]
 - [[decisoes/0009-audio-sounddevice-e-palmas-por-pico|0009 — Áudio com sounddevice e palmas por pico]]
 - [[decisoes/0010-voz-daniel-e-streaming-http|0010 — Voz George e streaming HTTP em PCM]]
+- [[decisoes/0011-nucleo-proprio-do-cerebro|0011 — Núcleo próprio do cérebro]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-30-troca-voz-george|2026-10-30 — Troca da voz para George]]
+- [[log/2026-10-31-nucleo-do-cerebro|2026-10-31 — Núcleo do cérebro]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
