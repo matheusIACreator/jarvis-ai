@@ -21,6 +21,7 @@ REQUIRED_KEYS = ("ANTHROPIC_API_KEY", "ELEVENLABS_API_KEY")
 DEFAULT_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"
 
 DEFAULT_STARTUP_AUDIO_SECONDS = 10.0
+DEFAULT_STARTUP_AUDIO_START = 0.0
 
 DEFAULT_WHISPER_MODEL = "small"
 DEFAULT_WHISPER_LANGUAGE = "en"
@@ -42,6 +43,7 @@ class Config:
     telegram_bot_token: str | None = None
     telegram_chat_id: str | None = None
     startup_audio_seconds: float | None = DEFAULT_STARTUP_AUDIO_SECONDS  # None: whole file
+    startup_audio_start: float = DEFAULT_STARTUP_AUDIO_START  # seconds skipped at the start
     whisper_model: str = DEFAULT_WHISPER_MODEL
     whisper_language: str = DEFAULT_WHISPER_LANGUAGE
 
@@ -104,6 +106,15 @@ def _parse_seconds(value: str | None) -> float | None:
     return seconds if seconds > 0 else None
 
 
+def _parse_start(value: str | None) -> float:
+    if not value:
+        return DEFAULT_STARTUP_AUDIO_START
+    try:
+        return max(0.0, float(value))
+    except ValueError:
+        raise ConfigError(f"STARTUP_AUDIO_START must be a number, got {value!r}.") from None
+
+
 def load_config(
     env_file: Path | None = DEFAULT_ENV_FILE,
     environ: Mapping[str, str] | None = None,
@@ -138,6 +149,7 @@ def load_config(
         telegram_bot_token=values.get("TELEGRAM_BOT_TOKEN"),
         telegram_chat_id=values.get("TELEGRAM_CHAT_ID"),
         startup_audio_seconds=_parse_seconds(values.get("STARTUP_AUDIO_SECONDS")),
+        startup_audio_start=_parse_start(values.get("STARTUP_AUDIO_START")),
         whisper_model=values.get("WHISPER_MODEL") or DEFAULT_WHISPER_MODEL,
         whisper_language=values.get("WHISPER_LANGUAGE") or DEFAULT_WHISPER_LANGUAGE,
     )

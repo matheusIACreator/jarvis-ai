@@ -20,6 +20,8 @@ tags: [decisao, servico, fase-1]
 - Palmas duplas → música de abertura → saudação → conversa → volta a esperar palmas.
 - Música: PyAV decodifica, `sounddevice` toca sem bloquear; padrão 10 s com fade de 1,5 s
   (`STARTUP_AUDIO_SECONDS`, `0` = arquivo inteiro). Sem arquivo → só a saudação.
+- Início da música configurável por `STARTUP_AUDIO_START` (segundos pulados, com fade-in curto).
+  Usuário usa "Back in Black" (AC/DC) a partir do 6º segundo.
 - Saudação local por horário ("Good evening, sir. How may I help?"), sintetizada **durante** a música.
 - Conversa contínua: perguntas seguidas sem bater palmas de novo; termina com silêncio (5 s)
   ou despedida ("that's all", "goodbye", "no"...), com resposta curta de despedida.

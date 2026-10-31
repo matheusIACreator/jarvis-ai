@@ -39,7 +39,9 @@ def main() -> None:
         tools=ToolRegistry([make_clock_tool()]),
     )
     transcriber = Transcriber(config.whisper_model, config.whisper_language)
-    music = FilePlayer(config.startup_audio_path, config.startup_audio_seconds)
+    music = FilePlayer(
+        config.startup_audio_path, config.startup_audio_seconds, config.startup_audio_start
+    )
 
     print(f"Loading Whisper '{config.whisper_model}'...")
     _ = transcriber.model  # load now so the first command is not slow

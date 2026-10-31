@@ -2,7 +2,7 @@ import numpy as np
 
 from jarvis.config import load_config
 from jarvis.trigger.microphone import MicrophoneStream
-from jarvis.tts.audio_file import FilePlayer, trim_with_fade
+from jarvis.tts.audio_file import FilePlayer, skip_start, trim_with_fade
 from jarvis.tts.speaker import Speaker
 
 REQUIRED = {"ANTHROPIC_API_KEY": "a", "ELEVENLABS_API_KEY": "e"}
@@ -22,6 +22,15 @@ def test_short_audio_and_no_limit_are_unchanged():
     audio = np.ones((300, 2), np.float32)
     assert trim_with_fade(audio, 100, max_seconds=5) is audio
     assert trim_with_fade(audio, 100, max_seconds=None) is audio
+
+
+def test_skip_start_drops_seconds_and_fades_in():
+    audio = np.ones((1000, 2), np.float32)
+    skipped = skip_start(audio, sample_rate=100, start_seconds=6, fade_in=0.5)
+    assert skipped.shape == (400, 2)
+    assert skipped[0, 0] == 0.0
+    assert skipped[-1, 0] == 1.0
+    assert skip_start(audio, 100, 0) is audio
 
 
 def test_missing_file_does_not_play(tmp_path):
@@ -46,6 +55,16 @@ def test_startup_seconds_setting(tmp_path):
     assert seconds("") == 10.0
     assert seconds("4.5") == 4.5
     assert seconds("0") is None
+
+
+def test_startup_start_setting(tmp_path):
+    def start(value):
+        environ = {**REQUIRED, "STARTUP_AUDIO_START": value}
+        return load_config(env_file=None, environ=environ, root=tmp_path).startup_audio_start
+
+    assert start("") == 0.0
+    assert start("6") == 6.0
+    assert start("-2") == 0.0
 
 
 class FakeTextToSpeech:

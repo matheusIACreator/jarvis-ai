@@ -21,7 +21,7 @@ tags: [indice, jarvis]
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (74 testes passando).
-- Falta testar o fluxo completo com palmas reais e a música em `assets/audio/startup.mp3`.
+- Música de abertura: "Back in Black" a partir do 6º s, 10 s. Falta testar o fluxo completo com palmas reais.
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
 - Voz: George (britânico maduro), `eleven_flash_v2_5` em streaming; testada e aprovada pelo usuário.
 - Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
@@ -57,7 +57,7 @@ tags: [indice, jarvis]
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-31-servico-principal|2026-10-31 — Serviço principal]]
+- [[log/2026-10-31-inicio-da-musica|2026-10-31 — Início da música de abertura]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]

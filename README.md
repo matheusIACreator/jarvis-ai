@@ -39,6 +39,7 @@ Manual test tools in `scripts/`:
 | Script | What it does |
 |---|---|
 | `clap_monitor.py` | Live clap detector levels |
+| `play_intro.py` | Play the startup music as Jarvis will (`STARTUP_AUDIO_START`, `STARTUP_AUDIO_SECONDS`) |
 | `listen.py` | Record one command and print the transcription |
 | `chat.py [--speak]` | Type to the brain, optionally hear the replies |
 | `say.py "text"` | Speak a line with the configured voice |

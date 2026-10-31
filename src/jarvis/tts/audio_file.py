@@ -32,6 +32,18 @@ def decode(path: Path, sample_rate: int = PLAYBACK_RATE) -> np.ndarray:
     return np.concatenate(chunks, axis=1).reshape(-1, CHANNELS).astype(np.float32, copy=False)
 
 
+def skip_start(audio: np.ndarray, sample_rate: int, start_seconds: float, fade_in: float = 0.05):
+    """Drop the first `start_seconds`, with a tiny fade-in so a mid-song start does not click."""
+    if start_seconds <= 0:
+        return audio
+    audio = audio[int(start_seconds * sample_rate) :].copy()
+    fade = min(len(audio), int(fade_in * sample_rate))
+    if fade:
+        ramp = np.linspace(0.0, 1.0, fade, dtype=np.float32)
+        audio[:fade] *= ramp[:, None] if audio.ndim == 2 else ramp
+    return audio
+
+
 def trim_with_fade(
     audio: np.ndarray, sample_rate: int, max_seconds: float | None, fade_seconds: float = 1.5
 ) -> np.ndarray:
@@ -47,9 +59,12 @@ def trim_with_fade(
 
 
 class FilePlayer:
-    def __init__(self, path: Path, max_seconds: float | None = 10.0) -> None:
+    def __init__(
+        self, path: Path, max_seconds: float | None = 10.0, start_seconds: float = 0.0
+    ) -> None:
         self.path = path
         self.max_seconds = max_seconds
+        self.start_seconds = start_seconds
         self._audio: np.ndarray | None = None
 
     def load(self) -> bool:
@@ -57,7 +72,8 @@ class FilePlayer:
         if not self.path.is_file():
             return False
         if self._audio is None:
-            self._audio = trim_with_fade(decode(self.path), PLAYBACK_RATE, self.max_seconds)
+            audio = skip_start(decode(self.path), PLAYBACK_RATE, self.start_seconds)
+            self._audio = trim_with_fade(audio, PLAYBACK_RATE, self.max_seconds)
         return True
 
     def start(self) -> bool:
