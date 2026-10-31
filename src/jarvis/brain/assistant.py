@@ -7,6 +7,8 @@ tool calls resolved in between. Design notes:
 - Within a turn, the assistant's content (thinking and tool_use blocks included) goes back to
   the API unchanged. Across turns only the plain text of each exchange is kept, so dropping
   old turns from the short history never edits a turn that carries thinking blocks.
+- Things the app did outside the model (a confirmed Telegram send) are recorded as
+  mid-conversation system messages, so the model trusts them instead of doubting its own words.
 - Haiku answers; for questions that need real reasoning it consults Sonnet through the
   server-side advisor tool, inside the same request.
 """
@@ -59,7 +61,11 @@ class Assistant:
     tools: ToolRegistry
     model: str = MODEL
     advisor_model: str | None = ADVISOR_MODEL  # None disables the advisor
-    history: list[dict[str, Any]] = field(default_factory=list)
+    turns: list[list[dict[str, Any]]] = field(default_factory=list)  # one list per exchange
+
+    @property
+    def history(self) -> list[dict[str, Any]]:
+        return [message for turn in self.turns for message in turn]
 
     def reply(self, user_text: str) -> str:
         """Answer one spoken request, running tools as needed."""
@@ -128,16 +134,21 @@ class Assistant:
             )
         return results
 
-    def remember(self, user_text: str, reply_text: str) -> None:
-        """Record an exchange handled outside the model (e.g. a confirmed action)."""
-        self._remember(user_text, reply_text)
+    def remember(self, user_text: str, reply_text: str, record: str | None = None) -> None:
+        """Record an exchange handled outside the model (e.g. a confirmed action).
 
-    def _remember(self, user_text: str, reply_text: str) -> None:
-        self.history += [
-            {"role": "user", "content": user_text},
-            {"role": "assistant", "content": reply_text or "(no reply)"},
-        ]
-        del self.history[: -2 * MAX_TURNS_KEPT]
+        `record` states what actually happened; it is added as a system message between the
+        user's words and the reply, which is where the API allows one.
+        """
+        self._remember(user_text, reply_text, record)
+
+    def _remember(self, user_text: str, reply_text: str, record: str | None = None) -> None:
+        turn: list[dict[str, Any]] = [{"role": "user", "content": user_text}]
+        if record:
+            turn.append({"role": "system", "content": record})
+        turn.append({"role": "assistant", "content": reply_text or "(no reply)"})
+        self.turns.append(turn)
+        del self.turns[:-MAX_TURNS_KEPT]
 
 
 def _text_of(content) -> str:

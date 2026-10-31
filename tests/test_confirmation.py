@@ -41,7 +41,9 @@ def pending(log):
 def test_yes_executes_once():
     gate, log = ConfirmationGate(), []
     gate.request(pending(log))
-    assert gate.resolve("Yes") == "Done, sir."
+    resolution = gate.resolve("Yes")
+    assert resolution.reply == "Done, sir."
+    assert "carried it out" in resolution.record and "send a test" in resolution.record
     assert log == ["sent"]
     assert gate.resolve("Yes") is None  # nothing pending any more
     assert log == ["sent"]
@@ -50,7 +52,9 @@ def test_yes_executes_once():
 def test_no_cancels_without_executing():
     gate, log = ConfirmationGate(), []
     gate.request(pending(log))
-    assert gate.resolve("No, thanks") == CANCELLED
+    resolution = gate.resolve("No, thanks")
+    assert resolution.reply == CANCELLED
+    assert "declined" in resolution.record
     assert log == []
 
 
@@ -69,7 +73,9 @@ def test_failure_is_reported_not_raised():
         raise RuntimeError("network down")
 
     gate.request(PendingAction("send", boom))
-    assert gate.resolve("yes") == FAILED
+    resolution = gate.resolve("yes")
+    assert resolution.reply == FAILED
+    assert "failed" in resolution.record
 
 
 def test_request_message_tells_model_it_is_not_done():
@@ -84,7 +90,7 @@ def test_telegram_tool_only_sends_after_yes():
     assert not result.is_error
     assert "Buy milk" in result.content
     assert sent == []
-    assert gate.resolve("Yes, send it") == SENT
+    assert gate.resolve("Yes, send it").reply == SENT
     assert sent == ["Buy milk"]
 
 
@@ -101,7 +107,7 @@ def test_conversation_routes_answer_to_gate_before_brain():
         listen=lambda: heard.pop(0) if heard else "",
         think=lambda text: thought.append(text) or "Noon.",
         say=said.append,
-        confirm=gate.resolve,
+        confirm=lambda text: (r := gate.resolve(text)) and r.reply,
     ).run()
     assert sent == [1]
     assert said == ["Sent.", "Noon."]

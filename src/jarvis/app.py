@@ -81,10 +81,12 @@ def main() -> None:
             return TROUBLE_GENERIC
 
     def confirm(text: str) -> str | None:
-        outcome = gate.resolve(text)
-        if outcome:
-            assistant.remember(text, outcome)  # so the model knows what happened
-        return outcome
+        resolution = gate.resolve(text)
+        if resolution is None:
+            return None
+        # Tell the model what really happened, or it may doubt a "Sent" it never saw happen.
+        assistant.remember(text, resolution.reply, resolution.record)
+        return resolution.reply
 
     def say(text: str) -> None:
         print(f"jarvis> {text}")

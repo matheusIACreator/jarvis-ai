@@ -23,7 +23,7 @@ def make_telegram_tool(gate: ConfirmationGate, send: Callable[[str], None]) -> T
             return SENT
 
         return gate.request(
-            PendingAction(description=f'send "{text}" to your Telegram', execute=execute)
+            PendingAction(description=f"send \"{text}\" to the user's Telegram", execute=execute)
         )
 
     return Tool(

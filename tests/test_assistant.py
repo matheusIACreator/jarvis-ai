@@ -164,3 +164,23 @@ def test_pause_turn_is_resumed_with_content_appended():
     client = FakeClient(paused, response("end_turn", text("Here is my advice, sir.")))
     assert Assistant(client=client, tools=registry()).reply("Plan my week") == "Here is my advice, sir."
     assert client.requests[1]["messages"][1] == {"role": "assistant", "content": paused.content}
+
+
+def test_remember_with_record_adds_system_note_and_trims_by_turn():
+    replies = [response("end_turn", text(f"r{i}")) for i in range(MAX_TURNS_KEPT + 1)]
+    client = FakeClient(*replies)
+    assistant = Assistant(client=client, tools=registry())
+    assistant.remember("Do it.", "Sent, sir.", "The user confirmed and it was sent.")
+    assert assistant.history == [
+        {"role": "user", "content": "Do it."},
+        {"role": "system", "content": "The user confirmed and it was sent."},
+        {"role": "assistant", "content": "Sent, sir."},
+    ]
+    assistant.reply("Thanks")
+    assert client.requests[0]["messages"][1]["role"] == "system"
+    for i in range(MAX_TURNS_KEPT):
+        assistant.reply(f"q{i}")
+    # The noted turn was dropped whole: history never starts with a system message.
+    assert len(assistant.turns) == MAX_TURNS_KEPT
+    assert assistant.history[0]["role"] == "user"
+    assert all(m["role"] != "system" for m in assistant.history)
