@@ -27,9 +27,10 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [x] 3. Captura de microfone: stream de áudio contínuo do microfone do notebook (escolher biblioteca e pedir aprovação antes de instalar).
 - [x] 4. Detector de palmas duplas: detecção de picos de energia + janela de tempo entre as duas palmas; testes com sinais sintéticos.
 - [ ] 4b. Validar limiares das palmas com palmas reais (`scripts/clap_monitor.py`) — precisa do usuário.
+- [ ] 7b. Validar limiares de fala com a voz real do usuário (`scripts/listen.py`).
 - [ ] 5. Áudio de abertura: tocar o arquivo de `STARTUP_AUDIO_PATH` ao disparar o gatilho (sem travar o loop principal).
 - [ ] 6. Saudação: frase curta falada após a música.
-- [ ] 7. STT local: faster-whisper transcrevendo o comando (gravação até silêncio, modelo e idioma configuráveis).
+- [x] 7. STT local: faster-whisper transcrevendo o comando (gravação até silêncio, modelo e idioma configuráveis).
 - [x] 8. Loop do cérebro: Anthropic SDK com `claude-haiku-5-5`, prompt de sistema com cache, histórico curto, chamada de ferramentas.
 - [x] 8b. Cérebro testado na API real pelo usuário em 2026-10-31 (créditos adicionados; ferramenta de data/hora e voz OK).
 - [ ] 8c. Conferir `cache_read_input_tokens` quando prompt + ferramentas passarem de 512 tokens.
