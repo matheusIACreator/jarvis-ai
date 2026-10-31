@@ -20,7 +20,8 @@ tags: [indice, jarvis]
 - [ ] Fase 2 — notificações e "me chama" via bot do Telegram
 - [ ] Fase 3 — e-mail (Gmail) com rascunho + confirmação por voz antes de enviar
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
-- Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro e STT (faster-whisper small, inglês) prontos (49 testes passando).
+- Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (74 testes passando).
+- Falta testar o fluxo completo com palmas reais e a música em `assets/audio/startup.mp3`.
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
 - Voz: George (britânico maduro), `eleven_flash_v2_5` em streaming; testada e aprovada pelo usuário.
 - Limiares das palmas ainda não validados com palmas reais (`scripts/clap_monitor.py`).
@@ -29,8 +30,8 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
-- Item 5 do [[backlog]]: tocar o áudio de abertura (PyAV decodifica o mp3, `sounddevice` toca; sem dependência nova).
-- Depois: item 6 (saudação) e item 11 (serviço principal: palmas → música → saudação → ouvir → cérebro → voz).
+- Usuário: testar `python -m jarvis` com palmas reais (ajustar com `scripts/clap_monitor.py` se preciso).
+- Depois: item 12 do [[backlog]] (escalonar para Sonnet) ou Fase 2 (Telegram).
 
 ## Links
 
@@ -50,12 +51,13 @@ tags: [indice, jarvis]
 - [[decisoes/0010-voz-daniel-e-streaming-http|0010 — Voz George e streaming HTTP em PCM]]
 - [[decisoes/0011-nucleo-proprio-do-cerebro|0011 — Núcleo próprio do cérebro]]
 - [[decisoes/0012-stt-whisper-small-ingles|0012 — STT com faster-whisper small, só inglês]]
+- [[decisoes/0013-fluxo-da-sessao-de-voz|0013 — Fluxo da sessão de voz]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-31-stt-whisper|2026-10-31 — STT com faster-whisper]]
+- [[log/2026-10-31-servico-principal|2026-10-31 — Serviço principal]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
