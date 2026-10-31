@@ -6,10 +6,13 @@ Kept free of audio and API code: the loop gets plain callables, so it is testabl
 from __future__ import annotations
 
 import re
+import threading
 from collections.abc import Callable
 from dataclasses import dataclass
 
 FAREWELL = "Very good, sir. I'll be here if you need me."
+FILLER = "One moment, sir."
+FILLER_DELAY = 2.0  # seconds of silence before the filler plays
 
 # Phrases that end the session wherever they appear ("thanks, that's all").
 DISMISSAL_PHRASES = (
@@ -52,6 +55,32 @@ def is_dismissal(text: str) -> bool:
         return True
     padded = f" {normalized} "
     return any(f" {phrase} " in padded for phrase in DISMISSAL_PHRASES)
+
+
+def with_filler(
+    think: Callable[[str], str], play_filler: Callable[[], None], delay: float = FILLER_DELAY
+) -> Callable[[str], str]:
+    """Wrap `think` so a filler line plays if the answer takes longer than `delay`.
+
+    The filler always finishes before the answer is returned, so the two never overlap.
+    """
+
+    def thinking_out_loud(text: str) -> str:
+        done = threading.Event()
+
+        def filler_if_slow() -> None:
+            if not done.wait(delay):
+                play_filler()
+
+        filler = threading.Thread(target=filler_if_slow, daemon=True)
+        filler.start()
+        try:
+            return think(text)
+        finally:
+            done.set()
+            filler.join()
+
+    return thinking_out_loud
 
 
 @dataclass

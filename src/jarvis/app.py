@@ -14,7 +14,7 @@ import anthropic
 
 from jarvis.brain.assistant import Assistant
 from jarvis.config import ConfigError, load_config
-from jarvis.conversation import Conversation, greeting_for
+from jarvis.conversation import FILLER, Conversation, greeting_for, with_filler
 from jarvis.stt.recorder import record_utterance
 from jarvis.stt.transcriber import Transcriber
 from jarvis.tools.base import ToolRegistry
@@ -46,6 +46,9 @@ def main() -> None:
         config.startup_audio_path, config.startup_audio_seconds, config.startup_audio_start
     )
 
+    print("Preparing voice clips...")
+    filler_clip = speaker.synthesize(FILLER)  # once, so it plays instantly when needed
+
     print(f"Loading Whisper '{config.whisper_model}'...")
     _ = transcriber.model  # load now so the first command is not slow
     if not music.load():
@@ -73,7 +76,7 @@ def main() -> None:
 
         conversation = Conversation(
             listen=listen,
-            think=think,
+            think=with_filler(think, lambda: speaker.play(filler_clip)),
             say=say,
             on_heard=lambda text: print(f"you> {text}"),
             finished=session_over.is_set,

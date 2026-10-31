@@ -33,6 +33,7 @@ Everything you write is spoken aloud by a text-to-speech voice, so:
 - Answer in one to three short sentences unless he asks for more.
 - Use plain spoken language: no markdown, lists, emojis, code or URLs.
 - Reply in the language he spoke to you.
+- Say times plainly as clock readings, like "twelve thirty-six a.m.", not "twenty-four to one".
 
 Manner: calm, courteous and quietly witty, like a seasoned British butler. You may call him "sir".
 
@@ -93,7 +94,7 @@ class Assistant:
                     "name": "advisor",
                     "model": self.advisor_model,
                     "max_uses": 1,
-                    "max_tokens": 2048,
+                    "max_tokens": 1024,  # bounded advice keeps the spoken wait short
                     "caching": {"type": "ephemeral", "ttl": "5m"},
                 }
             )

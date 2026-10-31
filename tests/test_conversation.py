@@ -1,6 +1,8 @@
 import pytest
 
-from jarvis.conversation import FAREWELL, Conversation, greeting_for, is_dismissal
+import time
+
+from jarvis.conversation import FAREWELL, Conversation, greeting_for, is_dismissal, with_filler
 
 
 @pytest.mark.parametrize(
@@ -77,3 +79,38 @@ def test_empty_reply_is_not_spoken():
     script = Script("Hello")
     Conversation(listen=script.listen, think=lambda text: "", say=script.say).run()
     assert script.said == []
+
+
+def test_filler_plays_only_when_thinking_is_slow():
+    events = []
+
+    def slow(text):
+        time.sleep(0.15)
+        events.append("answer")
+        return "slow answer"
+
+    def fast(text):
+        return "fast answer"
+
+    def filler():
+        events.append("filler")
+
+    assert with_filler(fast, filler, delay=0.1)("q") == "fast answer"
+    assert events == []
+    assert with_filler(slow, filler, delay=0.05)("q") == "slow answer"
+    assert events == ["filler", "answer"]
+
+
+def test_filler_finishes_before_answer_returns():
+    events = []
+
+    def think(text):
+        time.sleep(0.1)
+        return "answer"
+
+    def filler():
+        time.sleep(0.2)
+        events.append("filler done")
+
+    assert with_filler(think, filler, delay=0.01)("q") == "answer"
+    assert events == ["filler done"]
