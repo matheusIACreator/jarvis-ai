@@ -10,6 +10,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "anthropic>=2.3",
+    # PyAV 19.0.2's bitstream wheel is blocked by App Control on the Windows laptop.
+    "av==18.0.0; sys_platform == 'win32'",
     "elevenlabs>=2",
     "faster-whisper>=1.2",
     "numpy>=2",
