@@ -36,6 +36,7 @@ or say "that's all" to end the session. Ctrl+C stops the service.
 
 With `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID` set, you can say "send me a Telegram message
 saying ...". Jarvis reads it back and sends it only after you answer with a plain "yes".
+You can also message the bot: Jarvis answers your own chat (and only yours) while the service runs.
 
 Manual test tools in `scripts/`:
 
@@ -46,6 +47,7 @@ Manual test tools in `scripts/`:
 | `listen.py` | Record one command and print the transcription |
 | `chat.py [--speak]` | Type to the brain, optionally hear the replies |
 | `say.py "text"` | Speak a line with the configured voice |
+| `telegram_chat.py [minutes]` | Run only the Telegram chat channel |
 
 ## Shared agent memory
 

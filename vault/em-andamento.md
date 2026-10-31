@@ -2,7 +2,7 @@
 tipo: em-andamento
 data: 2026-10-31
 agente: claude-code
-status: ativo
+status: livre
 tags: [handoff, memoria]
 ---
 
@@ -16,22 +16,16 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- Item 15 do [[backlog]]: conversar com o Jarvis por mensagens no Telegram (usuário confirmou que o envio por voz funcionou).
-- Plano:
-  - `interfaces/telegram.py`: `get_updates` (long polling) e `send_chat_action` ("digitando").
-  - `interfaces/telegram_chat.py`: `TelegramChat` — thread em segundo plano; só aceita mensagens do
-    `TELEGRAM_CHAT_ID`; texto vira pedido do usuário (papel `user`, nunca instrução de sistema);
-    resposta enviada no mesmo chat; mensagens antigas (Jarvis offline) são descartadas ao iniciar.
-  - `Assistant` com prompt próprio para texto e histórico separado da voz.
+- Nenhuma. Última concluída: chat pelo Telegram ([[log/2026-10-31-chat-pelo-telegram]]). Usuário encerrou o dia.
 
 ## Feito até agora
 
-- Tarefa marcada como ativa.
+- 
 
 ## Próximo passo
 
-- Escrever cliente + `TelegramChat` + testes; ligar no `app.py`.
+- Pegar a próxima tarefa do [[00-Indice]] (item 16).
 
 ## Arquivos tocados (ainda sem commit)
 
-- `vault/em-andamento.md`
+- 

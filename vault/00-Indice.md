@@ -22,8 +22,8 @@ tags: [indice, jarvis]
 - [ ] Fase 4 — ligação telefônica (Twilio + ElevenLabs Agents)
 - Fase 1 em andamento: ambiente, `jarvis.config`, microfone, detector de palmas, voz ElevenLabs, cérebro, STT e serviço principal (`python -m jarvis`) prontos (84 testes passando).
 - Sonnet 5.5 como advisor em perguntas difíceis; sessão encerra pela ferramenta `end_conversation`.
-- Fase 2 em andamento: envio para o Telegram do usuário com confirmação por voz decidida pelo código.
-- Gatilhos: palmas duplas (mínimo 0,08) ou "Hey Jarvis" (openWakeWord). 119 testes passando.
+- Fase 2 em andamento: envio ao Telegram com confirmação por voz e conversa por mensagem no Telegram.
+- Gatilhos: palmas duplas (mínimo 0,08) ou "Hey Jarvis" (openWakeWord). 128 testes passando.
 - Música de abertura: "Back in Black" a partir do 6º s, 10 s.
 - Testado com palmas reais em 2026-10-31: palmas → música → saudação OK. Conversa completa testada pelo usuário (perguntas seguidas, ferramenta de data, despedida).
 - Cérebro: núcleo próprio em `claude-haiku-5-5` (sem Hermes); testado de verdade com voz pelo usuário em 2026-10-31.
@@ -34,8 +34,8 @@ tags: [indice, jarvis]
 
 ## Próxima tarefa
 
-- Usuário: testar palmas e "Hey Jarvis" no serviço; testar envio ao Telegram por voz.
-- Item 15 do [[backlog]] (comandos pelo Telegram) ou item 16 ("me chama").
+- Item 16 do [[backlog]]: "me chama" (aviso no Telegram quando uma tarefa longa termina).
+- Ideias para depois: lembretes agendados, Jarvis lendo o vault como memória, interromper a fala (barge-in).
 
 ## Links
 
@@ -59,12 +59,13 @@ tags: [indice, jarvis]
 - [[decisoes/0014-sonnet-como-advisor|0014 — Sonnet como advisor e encerramento pela ferramenta]]
 - [[decisoes/0015-confirmacao-e-telegram|0015 — Confirmação por voz e Telegram]]
 - [[decisoes/0016-palavra-de-ativacao|0016 — "Hey Jarvis" e palmas mais sensíveis]]
+- [[decisoes/0017-chat-pelo-telegram|0017 — Conversa pelo Telegram em canal separado]]
 
 ### Tarefa em andamento
 - [[em-andamento]]
 
 ### Último log
-- [[log/2026-10-31-confirmacao-no-historico|2026-10-31 — Confirmação registrada no histórico]]
+- [[log/2026-10-31-chat-pelo-telegram|2026-10-31 — Chat pelo Telegram]]
 
 ### Modelos
 - [[_modelos/modelo-decisao|Modelo de decisão]]
