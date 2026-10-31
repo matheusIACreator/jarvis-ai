@@ -27,7 +27,7 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [x] 3. Captura de microfone: stream de áudio contínuo do microfone do notebook (escolher biblioteca e pedir aprovação antes de instalar).
 - [x] 4. Detector de palmas duplas: detecção de picos de energia + janela de tempo entre as duas palmas; testes com sinais sintéticos.
 - [ ] 4b. Validar limiares das palmas com palmas reais (`scripts/clap_monitor.py`) — precisa do usuário.
-- [ ] 7b. Validar limiares de fala com a voz real do usuário (`scripts/listen.py`).
+- [x] 7b. Limiares de fala validados com a voz real do usuário em 2026-10-31 (2,2 s de áudio, 1,8 s para transcrever, texto exato).
 - [ ] 5. Áudio de abertura: tocar o arquivo de `STARTUP_AUDIO_PATH` ao disparar o gatilho (sem travar o loop principal).
 - [ ] 6. Saudação: frase curta falada após a música.
 - [x] 7. STT local: faster-whisper transcrevendo o comando (gravação até silêncio, modelo e idioma configuráveis).
