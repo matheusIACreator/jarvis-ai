@@ -22,7 +22,9 @@ from jarvis.trigger.microphone import SAMPLE_RATE
 @dataclass(frozen=True)
 class ClapSettings:
     sample_rate: int = SAMPLE_RATE
-    min_peak: float = 0.25  # absolute peak a clap must reach (full scale is 1.0)
+    # Absolute peak a clap must reach (full scale is 1.0). Real claps on the laptop mic
+    # measured 0.12-0.27 a little away from it, with room noise near 0.003.
+    min_peak: float = 0.08
     threshold_ratio: float = 10.0  # peak must exceed noise floor times this
     max_clap_duration: float = 0.12  # seconds a clap may stay loud
     min_gap: float = 0.12  # seconds between the two clap onsets
@@ -65,6 +67,10 @@ class ClapDetector:
                 # Too long to be a clap; it also breaks any pending pair.
                 self._sustained = True
                 self._last_clap = None
+            if self._sustained:
+                # Steady loud sound is background (fan, music, noisy room): let the floor
+                # rise so the threshold adapts instead of staying stuck.
+                self._update_noise_floor(rms)
             return False
 
         self._update_noise_floor(rms)

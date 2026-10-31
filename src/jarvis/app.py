@@ -23,7 +23,7 @@ from jarvis.tools.base import ToolRegistry
 from jarvis.tools.clock import make_clock_tool
 from jarvis.tools.session import make_end_conversation_tool
 from jarvis.tools.telegram import make_telegram_tool
-from jarvis.trigger.clap import ClapDetector
+from jarvis.trigger.clap import ClapDetector, ClapSettings
 from jarvis.trigger.microphone import MicrophoneStream
 from jarvis.tts.audio_file import FilePlayer
 from jarvis.tts.speaker import Speaker
@@ -102,7 +102,7 @@ def main() -> None:
         with ThreadPoolExecutor(max_workers=1) as pool:
             while True:
                 print("Waiting for a double clap... (Ctrl+C to stop)")
-                detector = ClapDetector()
+                detector = ClapDetector(ClapSettings(min_peak=config.clap_min_peak))
                 for block in mic:
                     if detector.process(block):
                         break

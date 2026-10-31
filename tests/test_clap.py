@@ -72,3 +72,9 @@ def test_works_over_noisy_background():
 
 def test_noisy_background_alone_does_not_trigger():
     assert run(background(3.0, level=0.05)) == []
+
+
+def test_soft_claps_like_the_real_ones_trigger():
+    # Measured on the laptop mic: claps peaking around 0.15 in a quiet room.
+    signal = add_clap(add_clap(background(2.0, level=0.002), 0.5, amplitude=0.15), 0.85, amplitude=0.15)
+    assert len(run(signal)) == 1

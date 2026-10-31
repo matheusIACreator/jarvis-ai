@@ -76,3 +76,12 @@ def test_synthesize_returns_whole_frames():
     client = type("Client", (), {"text_to_speech": FakeTextToSpeech()})()
     speaker = Speaker(api_key="unused", voice_id="v", client=client)
     assert speaker.synthesize("Hi") == b"\x01\x02\x03\x04"
+
+
+def test_clap_min_peak_setting(tmp_path):
+    def peak(value):
+        environ = {**REQUIRED, "CLAP_MIN_PEAK": value}
+        return load_config(env_file=None, environ=environ, root=tmp_path).clap_min_peak
+
+    assert peak("") == 0.08
+    assert peak("0.15") == 0.15

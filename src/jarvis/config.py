@@ -23,6 +23,8 @@ DEFAULT_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"
 DEFAULT_STARTUP_AUDIO_SECONDS = 10.0
 DEFAULT_STARTUP_AUDIO_START = 0.0
 
+DEFAULT_CLAP_MIN_PEAK = 0.08
+
 DEFAULT_WHISPER_MODEL = "small"
 DEFAULT_WHISPER_LANGUAGE = "en"
 
@@ -44,6 +46,7 @@ class Config:
     telegram_chat_id: str | None = None
     startup_audio_seconds: float | None = DEFAULT_STARTUP_AUDIO_SECONDS  # None: whole file
     startup_audio_start: float = DEFAULT_STARTUP_AUDIO_START  # seconds skipped at the start
+    clap_min_peak: float = DEFAULT_CLAP_MIN_PEAK
     whisper_model: str = DEFAULT_WHISPER_MODEL
     whisper_language: str = DEFAULT_WHISPER_LANGUAGE
 
@@ -106,6 +109,15 @@ def _parse_seconds(value: str | None) -> float | None:
     return seconds if seconds > 0 else None
 
 
+def _parse_float(key: str, value: str | None, default: float) -> float:
+    if not value:
+        return default
+    try:
+        return float(value)
+    except ValueError:
+        raise ConfigError(f"{key} must be a number, got {value!r}.") from None
+
+
 def _parse_start(value: str | None) -> float:
     if not value:
         return DEFAULT_STARTUP_AUDIO_START
@@ -150,6 +162,7 @@ def load_config(
         telegram_chat_id=values.get("TELEGRAM_CHAT_ID"),
         startup_audio_seconds=_parse_seconds(values.get("STARTUP_AUDIO_SECONDS")),
         startup_audio_start=_parse_start(values.get("STARTUP_AUDIO_START")),
+        clap_min_peak=_parse_float("CLAP_MIN_PEAK", values.get("CLAP_MIN_PEAK"), DEFAULT_CLAP_MIN_PEAK),
         whisper_model=values.get("WHISPER_MODEL") or DEFAULT_WHISPER_MODEL,
         whisper_language=values.get("WHISPER_LANGUAGE") or DEFAULT_WHISPER_LANGUAGE,
     )
