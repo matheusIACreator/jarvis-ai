@@ -23,7 +23,7 @@ class RecorderSettings:
     min_speech_rms: float = 0.01  # and this absolute level (full scale is 1.0)
     silence_after: float = 0.8  # seconds of silence that end the command
     max_duration: float = 12.0  # hard cap on one command
-    wait_timeout: float = 5.0  # give up if nobody starts talking
+    wait_timeout: float | None = 5.0  # None: listen until speech or the stream ends
     pre_roll: float = 0.3  # audio kept from just before speech starts
     noise_floor_alpha: float = 0.1
     min_noise_floor: float = 0.002
@@ -58,7 +58,7 @@ def record_utterance(
                 while pre_roll and pre_roll_samples - len(pre_roll[0]) >= s.pre_roll * s.sample_rate:
                     pre_roll_samples -= len(pre_roll.popleft())
                 waited += seconds
-                if waited >= s.wait_timeout:
+                if s.wait_timeout is not None and waited >= s.wait_timeout:
                     return None
                 continue
             captured.extend(pre_roll)

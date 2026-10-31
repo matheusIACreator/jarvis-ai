@@ -111,3 +111,17 @@ def test_repr_hides_secrets(tmp_path):
     config = load_config(env_file=None, environ=REQUIRED, root=tmp_path)
     assert "sk-ant-test" not in repr(config)
     assert "el-test" not in repr(config)
+
+
+@pytest.mark.parametrize("value,expected", [(None, None), ("0", None), ("90", 90.0)])
+def test_session_idle_time_can_be_disabled_or_configured(tmp_path, value, expected):
+    environ = {**REQUIRED}
+    if value is not None:
+        environ["SESSION_IDLE_SECONDS"] = value
+    assert load_config(env_file=None, environ=environ, root=tmp_path).session_idle_seconds == expected
+
+
+@pytest.mark.parametrize("value", ["-1", "nan", "inf", "no"])
+def test_invalid_session_idle_time_is_rejected(tmp_path, value):
+    with pytest.raises(ConfigError, match="SESSION_IDLE_SECONDS"):
+        load_config(env_file=None, environ={**REQUIRED, "SESSION_IDLE_SECONDS": value}, root=tmp_path)

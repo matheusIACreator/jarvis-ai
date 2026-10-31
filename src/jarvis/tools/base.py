@@ -20,6 +20,8 @@ class Tool:
     # A final tool ends the turn: it runs, and the text already written is the reply,
     # with no follow-up request to the model.
     final: bool = False
+    # A successful result is already user-facing text (e.g. a prepared confirmation question).
+    reply_directly: bool = False
 
     def definition(self) -> dict[str, Any]:
         return {
@@ -50,6 +52,10 @@ class ToolRegistry:
     def is_final(self, name: str) -> bool:
         tool = self._tools.get(name)
         return tool is not None and tool.final
+
+    def replies_directly(self, name: str) -> bool:
+        tool = self._tools.get(name)
+        return tool is not None and tool.reply_directly
 
     def run(self, name: str, tool_input: Mapping[str, Any]) -> ToolResult:
         tool = self._tools.get(name)

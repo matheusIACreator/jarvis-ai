@@ -10,9 +10,11 @@ from __future__ import annotations
 import re
 from collections.abc import Callable
 from dataclasses import dataclass
+from time import monotonic
 
 CANCELLED = "Cancelled, sir. Nothing was sent."
 FAILED = "I'm afraid that didn't go through, sir."
+EXPIRED = "That confirmation has expired, sir. Please ask me again; nothing was started or sent."
 
 # The whole reply must be one of these (after normalizing), so "yes, but change it" never sends.
 YES = {
@@ -20,6 +22,9 @@ YES = {
     "do it", "send it", "go ahead", "please do", "yes please", "yes send it", "yes do it",
     "yes go ahead", "yes jarvis", "yes sir", "that's right", "sounds good", "ok send it",
     "okay send it",
+    "start it", "yes start it", "start it and send the result",
+    "yes start it and send the result", "yes please start it and send the result",
+    "sim", "pode iniciar", "sim pode iniciar", "sim pode iniciar e enviar o resultado",
 }
 NO_STARTS = ("no", "nope", "don't", "do not", "cancel", "stop", "never mind", "wait", "hold on")
 
@@ -53,12 +58,18 @@ def classify(text: str) -> str:
 
 
 class ConfirmationGate:
-    def __init__(self) -> None:
+    def __init__(self, timeout: float = 60.0, clock: Callable[[], float] = monotonic) -> None:
         self.pending: PendingAction | None = None
+        self.timeout = timeout
+        self.clock = clock
+        self._requested_at = 0.0
 
     def request(self, action: PendingAction) -> str:
         """Hold `action` until the user answers. Returns the tool result for the model."""
+        if self.pending is not None and self.clock() - self._requested_at < self.timeout:
+            raise ValueError("An action is already waiting for confirmation. Settle it first.")
         self.pending = action
+        self._requested_at = self.clock()
         return (
             f"NOT DONE YET. Pending: {action.description}. Read it back to the user in one short "
             "sentence and ask him to confirm. It happens only if he says yes; do not claim it is done."
@@ -74,6 +85,8 @@ class ConfirmationGate:
         action, self.pending = self.pending, None
         if action is None:
             return None
+        if self.clock() - self._requested_at >= self.timeout:
+            return Resolution(EXPIRED, f"Confirmation expired; this was not done: {action.description}.")
         answer = classify(text)
         if answer == "yes":
             try:

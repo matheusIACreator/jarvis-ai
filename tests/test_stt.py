@@ -3,6 +3,7 @@ from types import SimpleNamespace
 import numpy as np
 
 from jarvis.config import load_config
+from jarvis.app import listen_for_command
 from jarvis.stt.recorder import RecorderSettings, record_utterance
 from jarvis.stt.transcriber import Transcriber
 from jarvis.trigger.microphone import BLOCK_SIZE, SAMPLE_RATE
@@ -41,6 +42,39 @@ def test_captures_speech_with_pre_roll_and_stops_on_silence():
 def test_returns_none_when_nobody_speaks():
     audio = signal((6.0, 0.0))
     assert record_utterance(blocks(audio)) is None
+
+
+def test_unlimited_listening_captures_command_after_long_silence():
+    audio = signal((30.0, 0.0), (1.0, 0.2), (1.0, 0.0))
+    utterance = record_utterance(blocks(audio), RecorderSettings(wait_timeout=None))
+    assert utterance is not None
+    assert 1.7 < len(utterance) / SAMPLE_RATE < 2.3
+
+
+def test_custom_wait_timeout_still_allows_idle_session_to_end():
+    audio = signal((3.0, 0.0), (1.0, 0.2))
+    assert record_utterance(blocks(audio), RecorderSettings(wait_timeout=2.0)) is None
+
+
+def test_unrecognized_noise_does_not_end_listening(monkeypatch):
+    import jarvis.app as app
+
+    recordings = iter([np.zeros(16000), np.ones(16000)])
+    texts = iter(["  ", "What time is it?"])
+    drained = []
+    monkeypatch.setattr(app, "record_utterance", lambda mic, settings: next(recordings))
+    mic = SimpleNamespace(drain=lambda: drained.append(True))
+    transcriber = SimpleNamespace(transcribe=lambda audio: next(texts))
+    assert listen_for_command(mic, transcriber, RecorderSettings(wait_timeout=None)) == "What time is it?"
+    assert drained == [True]
+
+
+def test_listen_returns_on_real_timeout_without_transcribing(monkeypatch):
+    import jarvis.app as app
+
+    monkeypatch.setattr(app, "record_utterance", lambda mic, settings: None)
+    mic = SimpleNamespace(drain=lambda: None)
+    assert listen_for_command(mic, object(), RecorderSettings(wait_timeout=5)) == ""
 
 
 def test_max_duration_caps_long_speech():

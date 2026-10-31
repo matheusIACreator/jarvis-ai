@@ -17,7 +17,9 @@ def make_end_conversation_tool(on_end: Callable[[], None]) -> Tool:
         description=(
             "Ends the voice session so Jarvis stops listening until the next double clap. "
             "Call it when the user signals he is done (thanks him for nothing further, says "
-            "that's all, goodbye, good night). Write your brief farewell as text in the same reply."
+            "that's all, goodbye, good night). Silence, a pause, 'okay, I'll wait' and waiting "
+            "for a task are NOT dismissals: never call this tool for those. "
+            "Write your brief farewell as text in the same reply."
         ),
         input_schema={"type": "object", "properties": {}, "additionalProperties": False},
         handler=end_conversation,

@@ -22,17 +22,18 @@ def make_telegram_tool(gate: ConfirmationGate, send: Callable[[str], None]) -> T
             send(text)
             return SENT
 
-        return gate.request(
+        gate.request(
             PendingAction(description=f"send \"{text}\" to the user's Telegram", execute=execute)
         )
+        return f'Shall I send "{text}" to your Telegram?'
 
     return Tool(
         name="send_telegram_message",
         description=(
             "Sends a text message to the user's own Telegram chat (notes, reminders, links, "
             "summaries for himself). It cannot message other people. The message is not sent "
-            "until the user confirms out loud, so after calling it, read the message back and "
-            "ask him to confirm."
+            "until the user confirms out loud. Call this tool BEFORE asking for confirmation; "
+            "its result is the confirmation question the application will speak directly."
         ),
         input_schema={
             "type": "object",
@@ -41,4 +42,5 @@ def make_telegram_tool(gate: ConfirmationGate, send: Callable[[str], None]) -> T
             "additionalProperties": False,
         },
         handler=send_telegram_message,
+        reply_directly=True,
     )

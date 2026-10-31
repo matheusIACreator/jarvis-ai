@@ -6,6 +6,7 @@ The `.env` file is read but never written to `os.environ`.
 
 from __future__ import annotations
 
+import math
 import os
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -51,6 +52,7 @@ class Config:
     wake_word_threshold: float | None = DEFAULT_WAKE_WORD_THRESHOLD  # None: wake word off
     whisper_model: str = DEFAULT_WHISPER_MODEL
     whisper_language: str = DEFAULT_WHISPER_LANGUAGE
+    session_idle_seconds: float | None = None  # None: only an explicit dismissal ends idle listening
 
     def __repr__(self) -> str:
         # Never print secrets, e.g. in tracebacks or logs.
@@ -129,6 +131,13 @@ def _parse_start(value: str | None) -> float:
         raise ConfigError(f"STARTUP_AUDIO_START must be a number, got {value!r}.") from None
 
 
+def _parse_session_idle(value: str | None) -> float | None:
+    seconds = _parse_float("SESSION_IDLE_SECONDS", value, 0.0)
+    if not math.isfinite(seconds) or seconds < 0:
+        raise ConfigError("SESSION_IDLE_SECONDS must be a finite number of seconds >= 0.")
+    return seconds or None
+
+
 def load_config(
     env_file: Path | None = DEFAULT_ENV_FILE,
     environ: Mapping[str, str] | None = None,
@@ -171,4 +180,5 @@ def load_config(
         or None,
         whisper_model=values.get("WHISPER_MODEL") or DEFAULT_WHISPER_MODEL,
         whisper_language=values.get("WHISPER_LANGUAGE") or DEFAULT_WHISPER_LANGUAGE,
+        session_idle_seconds=_parse_session_idle(values.get("SESSION_IDLE_SECONDS")),
     )

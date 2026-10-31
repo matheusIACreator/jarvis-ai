@@ -4,7 +4,7 @@ import urllib.error
 
 import pytest
 
-from jarvis.confirmation import CANCELLED, FAILED, ConfirmationGate, PendingAction, classify
+from jarvis.confirmation import CANCELLED, EXPIRED, FAILED, ConfirmationGate, PendingAction, classify
 from jarvis.conversation import Conversation
 from jarvis.interfaces import telegram
 from jarvis.interfaces.telegram import TelegramBot, TelegramError
@@ -14,6 +14,11 @@ from jarvis.tools.telegram import SENT, make_telegram_tool
 
 @pytest.mark.parametrize("text", ["Yes.", "Yes, please", "send it", "Go ahead!", "yeah", "Yes, Jarvis."])
 def test_clear_yes(text):
+    assert classify(text) == "yes"
+
+
+@pytest.mark.parametrize("text", ["Yes, start it and send the result.", "Start it.", "Sim."])
+def test_explicit_start_confirmation(text):
     assert classify(text) == "yes"
 
 
@@ -81,6 +86,35 @@ def test_failure_is_reported_not_raised():
 def test_request_message_tells_model_it_is_not_done():
     message = ConfirmationGate().request(PendingAction("send 'hi'", lambda: ""))
     assert message.startswith("NOT DONE YET")
+
+
+def test_old_confirmation_expires_even_while_voice_session_stays_open():
+    now, sent = [100.0], []
+    gate = ConfirmationGate(timeout=60, clock=lambda: now[0])
+    gate.request(pending(sent))
+    now[0] += 61
+    assert gate.resolve("yes").reply == EXPIRED
+    assert sent == []
+    assert gate.pending is None
+
+
+def test_new_action_cannot_replace_the_question_already_asked():
+    gate, sent = ConfirmationGate(), []
+    gate.request(pending(sent))
+    with pytest.raises(ValueError, match="already waiting"):
+        gate.request(PendingAction("different action", lambda: sent.append("wrong")))
+    gate.resolve("yes")
+    assert sent == ["sent"]
+
+
+def test_expired_action_can_be_replaced_by_a_new_request():
+    now, sent = [100.0], []
+    gate = ConfirmationGate(timeout=60, clock=lambda: now[0])
+    gate.request(PendingAction("old", lambda: sent.append("old")))
+    now[0] += 60
+    gate.request(PendingAction("new", lambda: sent.append("new") or "done"))
+    gate.resolve("yes")
+    assert sent == ["new"]
 
 
 def test_telegram_tool_only_sends_after_yes():

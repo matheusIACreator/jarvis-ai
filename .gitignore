@@ -37,3 +37,8 @@ desktop.ini
 .DS_Store
 .vscode/
 .idea/
+# Frontend and local conversation memory
+frontend/node_modules/
+frontend/.next/
+frontend/*.tsbuildinfo
+vault/conversas/

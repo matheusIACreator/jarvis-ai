@@ -1,0 +1,11 @@
+filters:
+  and:
+    - 'file.inFolder("conversas")'
+    - 'file.ext == "md"'
+views:
+  - type: table
+    name: Conversas do Jarvis
+    order:
+      - file.name
+      - data
+      - canal

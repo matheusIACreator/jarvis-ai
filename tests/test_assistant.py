@@ -11,6 +11,8 @@ from jarvis.brain.assistant import (
 )
 from jarvis.tools.base import Tool, ToolRegistry
 from jarvis.tools.session import make_end_conversation_tool
+from jarvis.confirmation import ConfirmationGate
+from jarvis.tools.telegram import SENT, make_telegram_tool
 
 
 def text(value):
@@ -157,6 +159,33 @@ def test_final_tool_ends_turn_without_follow_up_request():
     assert ended == [True]
     assert len(client.requests) == 1
     assert assistant.history[-1] == {"role": "assistant", "content": "Good night, sir."}
+
+
+def test_confirmation_is_spoken_from_registered_action_and_one_yes_sends_once():
+    gate, sent = ConfirmationGate(), []
+    client = FakeClient(response(
+        "tool_use", text("Already sent!"), tool_use("send_telegram_message", {"text": "Buy milk"})
+    ))
+    assistant = Assistant(client=client, tools=registry(make_telegram_tool(gate, sent.append)))
+    assert assistant.reply("Send buy milk to Telegram") == 'Shall I send "Buy milk" to your Telegram?'
+    assert gate.pending is not None
+    assert sent == []
+    assert len(client.requests) == 1  # no model round can replace the prepared question
+    assert gate.resolve("yes").reply == SENT
+    assert gate.resolve("yes") is None
+    assert sent == ["Buy milk"]
+
+
+def test_failed_direct_tool_goes_back_to_model_instead_of_becoming_a_question():
+    client = FakeClient(
+        response("tool_use", tool_use("send_telegram_message", {"text": " "})),
+        response("end_turn", text("What message should I send, sir?")),
+    )
+    gate = ConfirmationGate()
+    assistant = Assistant(client=client, tools=registry(make_telegram_tool(gate, lambda text: None)))
+    assert assistant.reply("Send a message") == "What message should I send, sir?"
+    assert gate.pending is None
+    assert client.requests[1]["messages"][-1]["content"][0]["is_error"]
 
 
 def test_pause_turn_is_resumed_with_content_appended():

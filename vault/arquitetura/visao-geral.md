@@ -1,6 +1,6 @@
 ---
 tipo: arquitetura
-data: 2026-10-30
+data: 2026-10-31
 tags: [arquitetura, fluxo, modulos]
 ---
 
@@ -15,6 +15,8 @@ tags: [arquitetura, fluxo, modulos]
 5. O cérebro (API da Anthropic) decide a resposta e chama ferramentas (tools/MCP) se necessário.
 6. O TTS da ElevenLabs transforma a resposta em fala, por streaming, no alto-falante.
 7. Quando preciso, o cérebro envia notificações pelo Telegram (sempre com confirmação para ações externas).
+8. Para "me chama", a confirmação autoriza iniciar uma análise em segundo plano e enviar seu resultado ou aviso de falha ao Telegram; a conversa de voz fica livre.
+9. Após ativar, o gravador espera nova fala sem limite por padrão; silêncio não reinicia a sessão nem dispara o cérebro. Despedida explícita retorna ao gatilho. `SESSION_IDLE_SECONDS` permite tempo limite opcional.
 
 ## Diagrama
 
@@ -28,6 +30,9 @@ flowchart LR
     E --> G[TTS ElevenLabs]
     G --> H[Alto-falante]
     E --> I[Telegram]
+    E --> J[Confirmação explícita]
+    J --> K[Análise em segundo plano]
+    K --> I
 ```
 
 ## Módulos e responsabilidades
@@ -45,6 +50,9 @@ flowchart LR
 - **`jarvis.tts`** — streaming de texto para fala (ElevenLabs Flash via WebSocket) e reprodução.
   - Entrada: texto. Saída: áudio no alto-falante.
 - **`jarvis.interfaces`** — canais externos: Telegram agora; e-mail e telefone depois.
+- **`jarvis.background`** — uma análise confirmada por vez em thread, independente da sessão de voz; recebe funções de análise e notificação do serviço. Sem persistência ou retomada.
+- O serviço cria um `Assistant` novo por análise, apenas com relógio e advisor. A ferramenta `start_background_task` pede confirmação pelo mesmo `ConfirmationGate`; não inicia trabalho ao ser chamada pelo modelo.
+- Ferramentas com `reply_directly` retornam pergunta já pronta após registrar a ação; o cérebro a repassa sem outra chamada ao modelo. O código confirma e executa uma vez. Aprovação expira em 60 s, independentemente da duração da sessão.
 
 ## Fronteiras de interface
 

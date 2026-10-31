@@ -1,31 +1,24 @@
 ---
 tipo: em-andamento
 data: 2026-10-31
-agente: claude-code
+agente: codex
 status: livre
-tags: [handoff, memoria]
+tags: [handoff, git]
 ---
 
 # Em andamento
 
-Checkpoint vivo da tarefa atual. Atualizar **durante** a sessão, após cada passo relevante,
-para que o outro agente consiga continuar se este ficar sem tokens no meio do trabalho.
-
-- `status: livre` → nenhuma tarefa em andamento; pegar a próxima do [[00-Indice]].
-- `status: ativo` → existe tarefa em andamento; continuar a partir do "Próximo passo".
-
 ## Tarefa
-
-- Nenhuma. Última concluída: chat pelo Telegram ([[log/2026-10-31-chat-pelo-telegram]]). Usuário encerrou o dia.
+- Registro das implementações versionáveis no Git principal; [[log/2026-10-31-git-implementacoes]].
 
 ## Feito até agora
-
-- 
+- Arquivos revisados e exclusões privadas verificadas; padrões comuns de credenciais não encontrados.
+- Git do scaffold preservado em .venv/frontend-scaffold-git-backup; frontend incluído como código normal.
+- 172 testes Python e build Webpack já validados nas sessões anteriores.
 
 ## Próximo passo
+- Validar voz real, recuperação de conversas e Base no Obsidian; ver [[backlog]].
+- Push depende de solicitação do usuário.
 
-- Pegar a próxima tarefa do [[00-Indice]] (item 16).
-
-## Arquivos tocados (ainda sem commit)
-
-- 
+## Arquivos tocados
+- Índice, backlog, checkpoint e log desta sessão; implementações das sessões anteriores incluídas nos commits.

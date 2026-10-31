@@ -1,6 +1,6 @@
 ---
 tipo: backlog
-data: 2026-10-30
+data: 2026-10-31
 tags: [backlog, planejamento]
 ---
 
@@ -50,4 +50,24 @@ Itens em ordem de execução. Marque `[x]` ao concluir e registre no log da sess
 - [x] 13. Bot do Telegram: enviar mensagem para `TELEGRAM_CHAT_ID` como tool do cérebro.
 - [x] 14. Fluxo de confirmação: toda ação externa (enviar mensagem etc.) exige "sim" explícito do usuário antes de executar; máquina de estados testada.
 - [x] 15. Receber mensagens do Telegram como comandos (tratadas como dados, nunca como instruções do sistema).
-- [ ] 16. "Me chama": Jarvis avisa pelo Telegram quando uma tarefa longa termina.
+- [x] 16. "Me chama": análise em segundo plano com resultado ou aviso de falha no Telegram, após confirmação por voz ([[decisoes/0018-analise-em-segundo-plano]]). 141 testes passando.
+- [ ] 16b. Validar por voz e bot real: pedir análise + aviso, confirmar, encerrar sessão e conferir entrega; repetir recusando para conferir ausência de envio.
+- [x] Corrigir bloqueio do PyAV na inicialização: wheel 18.0.0 fixado no Windows; Whisper small, VAD e música validados sem mudar políticas de segurança ([[decisoes/0019-pyav-compativel-com-app-control]]).
+- [x] Manter sessão aberta durante pausas (limite opcional), não encerrar em "I'll wait" e apresentar confirmação diretamente da ferramenta; 160 testes e validação do modelo real com entrega simulada ([[decisoes/0020-sessao-continua-e-confirmacao-direta]]).
+
+## Fase 3 — Gmail
+
+- [ ] 17. Definir autenticação e interface do Gmail; implementar rascunho e envio somente após confirmação explícita por voz.
+
+## Painel e memória Obsidian
+- [x] Next.js/React com shadcn, núcleo animado, estado de voz e layout responsivo.
+- [x] Chat web local e ponte Python com validação de origem e limites.
+- [x] Memória persistente em Markdown para voz, Telegram e web, busca pelo cérebro e painel.
+- [x] Skills Obsidian compartilhadas entre agentes e Base de conversas.
+- [x] 164 testes, build e validação visual com ponte simulada.
+- [ ] Validar com voz real a pulsação e recuperação de conversa em outra sessão.
+- [ ] Conferir a Base de conversas no aplicativo Obsidian.
+
+- [x] Tratar desconexões HTTP do painel sem traceback e liberar bloqueio de estado antes da escrita na rede; 172 testes passaram.
+
+- [x] Revisar e registrar implementações pendentes no Git principal, incluindo frontend e skills, sem dados locais privados.
