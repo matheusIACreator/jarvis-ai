@@ -128,6 +128,10 @@ class Assistant:
             )
         return results
 
+    def remember(self, user_text: str, reply_text: str) -> None:
+        """Record an exchange handled outside the model (e.g. a confirmed action)."""
+        self._remember(user_text, reply_text)
+
     def _remember(self, user_text: str, reply_text: str) -> None:
         self.history += [
             {"role": "user", "content": user_text},

@@ -14,12 +14,15 @@ import anthropic
 
 from jarvis.brain.assistant import Assistant
 from jarvis.config import ConfigError, load_config
+from jarvis.confirmation import ConfirmationGate
 from jarvis.conversation import FILLER, Conversation, greeting_for, with_filler
+from jarvis.interfaces.telegram import TelegramBot
 from jarvis.stt.recorder import record_utterance
 from jarvis.stt.transcriber import Transcriber
 from jarvis.tools.base import ToolRegistry
 from jarvis.tools.clock import make_clock_tool
 from jarvis.tools.session import make_end_conversation_tool
+from jarvis.tools.telegram import make_telegram_tool
 from jarvis.trigger.clap import ClapDetector
 from jarvis.trigger.microphone import MicrophoneStream
 from jarvis.tts.audio_file import FilePlayer
@@ -37,9 +40,17 @@ def main() -> None:
 
     speaker = Speaker(config.elevenlabs_api_key, config.elevenlabs_voice_id)
     session_over = threading.Event()
+    gate = ConfirmationGate()
+    tools = [make_clock_tool(), make_end_conversation_tool(session_over.set)]
+    if config.telegram_enabled:
+        bot = TelegramBot(config.telegram_bot_token)
+        chat_id = config.telegram_chat_id
+        tools.append(make_telegram_tool(gate, lambda text: bot.send_message(chat_id, text)))
+    else:
+        print("Telegram not configured (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID); messaging is off.")
     assistant = Assistant(
         client=anthropic.Anthropic(api_key=config.anthropic_api_key),
-        tools=ToolRegistry([make_clock_tool(), make_end_conversation_tool(session_over.set)]),
+        tools=ToolRegistry(tools),
     )
     transcriber = Transcriber(config.whisper_model, config.whisper_language)
     music = FilePlayer(
@@ -63,6 +74,12 @@ def main() -> None:
             print(f"(Anthropic API error: {exc})")
             return TROUBLE_GENERIC
 
+    def confirm(text: str) -> str | None:
+        outcome = gate.resolve(text)
+        if outcome:
+            assistant.remember(text, outcome)  # so the model knows what happened
+        return outcome
+
     def say(text: str) -> None:
         print(f"jarvis> {text}")
         speaker.speak(text)
@@ -80,6 +97,7 @@ def main() -> None:
             say=say,
             on_heard=lambda text: print(f"you> {text}"),
             finished=session_over.is_set,
+            confirm=confirm,
         )
         with ThreadPoolExecutor(max_workers=1) as pool:
             while True:
@@ -89,6 +107,7 @@ def main() -> None:
                     if detector.process(block):
                         break
                 session_over.clear()
+                gate.cancel()  # nothing carries over from a previous session
                 try:
                     wake_up(music, speaker, pool)
                     conversation.run()

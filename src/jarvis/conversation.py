@@ -90,6 +90,8 @@ class Conversation:
     say: Callable[[str], None]
     on_heard: Callable[[str], None] = lambda text: None
     finished: Callable[[], bool] = lambda: False  # e.g. the model called end_conversation
+    # Settles a pending outbound action from the user's answer; None means "not handled".
+    confirm: Callable[[str], str | None] = lambda text: None
 
     def run(self) -> int:
         """Keep answering follow-ups until silence or a dismissal. Returns answered turns."""
@@ -99,6 +101,11 @@ class Conversation:
             if not text:
                 return turns
             self.on_heard(text)
+            outcome = self.confirm(text)
+            if outcome:
+                self.say(outcome)
+                turns += 1
+                continue
             if is_dismissal(text):
                 self.say(FAREWELL)
                 return turns
