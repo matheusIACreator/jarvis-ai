@@ -2,7 +2,7 @@
 tipo: em-andamento
 data: 2026-10-31
 agente: claude-code
-status: livre
+status: ativo
 tags: [handoff, memoria]
 ---
 
@@ -16,16 +16,21 @@ para que o outro agente consiga continuar se este ficar sem tokens no meio do tr
 
 ## Tarefa
 
-- Nenhuma. Última concluída: núcleo do cérebro ([[log/2026-10-31-nucleo-do-cerebro]]).
+- Item 7 do [[backlog]]: STT local com faster-whisper.
+- Aprovado pelo usuário em 2026-10-31: instalar `faster-whisper`, modelo `small`, **somente inglês** (`en`).
+- Plano: `stt/recorder.py` (grava do início da fala até ~0,8 s de silêncio; lógica pura testável),
+  `stt/transcriber.py` (`WhisperModel` CPU int8, carregamento preguiçoso), `WHISPER_MODEL` e
+  `WHISPER_LANGUAGE` no `jarvis.config`, `scripts/listen.py` para teste manual.
+- PyAV (vem com o faster-whisper) decodifica mp3 → item 5 sem biblioteca extra.
 
 ## Feito até agora
 
-- 
+- Aprovação do usuário; tarefa marcada como ativa.
 
 ## Próximo passo
 
-- Pegar a próxima tarefa do [[00-Indice]].
+- `pip install faster-whisper`, escrever recorder + transcriber + testes.
 
 ## Arquivos tocados (ainda sem commit)
 
-- 
+- `vault/em-andamento.md`
