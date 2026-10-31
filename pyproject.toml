@@ -11,6 +11,7 @@ requires-python = ">=3.11"
 dependencies = [
     "anthropic>=2.3",
     "elevenlabs>=2",
+    "faster-whisper>=1.2",
     "numpy>=2",
     "sounddevice>=0.5",
 ]

@@ -20,6 +20,9 @@ REQUIRED_KEYS = ("ANTHROPIC_API_KEY", "ELEVENLABS_API_KEY")
 # ElevenLabs "George": mature British male, warm storyteller (premade, works on the free plan).
 DEFAULT_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"
 
+DEFAULT_WHISPER_MODEL = "small"
+DEFAULT_WHISPER_LANGUAGE = "en"
+
 # Values copied unchanged from .env.example start with this prefix.
 PLACEHOLDER_PREFIX = "your-"
 
@@ -36,6 +39,8 @@ class Config:
     startup_audio_path: Path
     telegram_bot_token: str | None = None
     telegram_chat_id: str | None = None
+    whisper_model: str = DEFAULT_WHISPER_MODEL
+    whisper_language: str = DEFAULT_WHISPER_LANGUAGE
 
     def __repr__(self) -> str:
         # Never print secrets, e.g. in tracebacks or logs.
@@ -119,4 +124,6 @@ def load_config(
         ),
         telegram_bot_token=values.get("TELEGRAM_BOT_TOKEN"),
         telegram_chat_id=values.get("TELEGRAM_CHAT_ID"),
+        whisper_model=values.get("WHISPER_MODEL") or DEFAULT_WHISPER_MODEL,
+        whisper_language=values.get("WHISPER_LANGUAGE") or DEFAULT_WHISPER_LANGUAGE,
     )
