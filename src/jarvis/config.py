@@ -24,6 +24,7 @@ DEFAULT_STARTUP_AUDIO_SECONDS = 10.0
 DEFAULT_STARTUP_AUDIO_START = 0.0
 
 DEFAULT_CLAP_MIN_PEAK = 0.08
+DEFAULT_WAKE_WORD_THRESHOLD = 0.5
 
 DEFAULT_WHISPER_MODEL = "small"
 DEFAULT_WHISPER_LANGUAGE = "en"
@@ -47,6 +48,7 @@ class Config:
     startup_audio_seconds: float | None = DEFAULT_STARTUP_AUDIO_SECONDS  # None: whole file
     startup_audio_start: float = DEFAULT_STARTUP_AUDIO_START  # seconds skipped at the start
     clap_min_peak: float = DEFAULT_CLAP_MIN_PEAK
+    wake_word_threshold: float | None = DEFAULT_WAKE_WORD_THRESHOLD  # None: wake word off
     whisper_model: str = DEFAULT_WHISPER_MODEL
     whisper_language: str = DEFAULT_WHISPER_LANGUAGE
 
@@ -163,6 +165,10 @@ def load_config(
         startup_audio_seconds=_parse_seconds(values.get("STARTUP_AUDIO_SECONDS")),
         startup_audio_start=_parse_start(values.get("STARTUP_AUDIO_START")),
         clap_min_peak=_parse_float("CLAP_MIN_PEAK", values.get("CLAP_MIN_PEAK"), DEFAULT_CLAP_MIN_PEAK),
+        wake_word_threshold=_parse_float(
+            "WAKE_WORD_THRESHOLD", values.get("WAKE_WORD_THRESHOLD"), DEFAULT_WAKE_WORD_THRESHOLD
+        )
+        or None,
         whisper_model=values.get("WHISPER_MODEL") or DEFAULT_WHISPER_MODEL,
         whisper_language=values.get("WHISPER_LANGUAGE") or DEFAULT_WHISPER_LANGUAGE,
     )

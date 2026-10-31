@@ -13,6 +13,7 @@ dependencies = [
     "elevenlabs>=2",
     "faster-whisper>=1.2",
     "numpy>=2",
+    "openwakeword>=0.6",
     "sounddevice>=0.5",
 ]
 

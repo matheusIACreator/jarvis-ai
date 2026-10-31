@@ -1,4 +1,4 @@
-"""Jarvis main service: double clap -> startup music -> greeting -> conversation.
+"""Jarvis main service: double clap or "Hey Jarvis" -> startup music -> greeting -> conversation.
 
 Run with:  .\\.venv\\Scripts\\python.exe -m jarvis
 Ctrl+C to stop.
@@ -25,6 +25,7 @@ from jarvis.tools.session import make_end_conversation_tool
 from jarvis.tools.telegram import make_telegram_tool
 from jarvis.trigger.clap import ClapDetector, ClapSettings
 from jarvis.trigger.microphone import MicrophoneStream
+from jarvis.trigger.wake_word import WakeWordDetector
 from jarvis.tts.audio_file import FilePlayer
 from jarvis.tts.speaker import Speaker
 
@@ -62,6 +63,11 @@ def main() -> None:
 
     print(f"Loading Whisper '{config.whisper_model}'...")
     _ = transcriber.model  # load now so the first command is not slow
+    wake_word = None
+    if config.wake_word_threshold:
+        print("Loading wake word 'Hey Jarvis'...")
+        wake_word = WakeWordDetector(config.wake_word_threshold)
+        _ = wake_word.model
     if not music.load():
         print(f"No startup music at {config.startup_audio_path}; Jarvis will just greet.")
 
@@ -101,11 +107,13 @@ def main() -> None:
         )
         with ThreadPoolExecutor(max_workers=1) as pool:
             while True:
-                print("Waiting for a double clap... (Ctrl+C to stop)")
-                detector = ClapDetector(ClapSettings(min_peak=config.clap_min_peak))
-                for block in mic:
-                    if detector.process(block):
-                        break
+                print(
+                    "Waiting for a double clap"
+                    + (' or "Hey Jarvis"' if wake_word else "")
+                    + "... (Ctrl+C to stop)"
+                )
+                clap = ClapDetector(ClapSettings(min_peak=config.clap_min_peak))
+                wait_for_trigger(mic, clap, wake_word)
                 session_over.clear()
                 gate.cancel()  # nothing carries over from a previous session
                 try:
@@ -114,6 +122,20 @@ def main() -> None:
                 except Exception as exc:  # keep the service alive after a failed session
                     print(f"(Session error: {type(exc).__name__}: {exc})")
                 mic.drain()
+
+
+def wait_for_trigger(mic, clap: ClapDetector, wake_word: WakeWordDetector | None) -> str:
+    """Block until a double clap or the wake word. Returns which one fired."""
+    if wake_word:
+        wake_word.reset()
+    for block in mic:
+        if clap.process(block):
+            print("(double clap)")
+            return "clap"
+        if wake_word and wake_word.process(block):
+            print('("Hey Jarvis")')
+            return "wake word"
+    return "stopped"
 
 
 def wake_up(music: FilePlayer, speaker: Speaker, pool: ThreadPoolExecutor) -> None:
