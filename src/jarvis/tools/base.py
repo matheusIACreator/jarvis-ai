@@ -17,6 +17,9 @@ class Tool:
     description: str
     input_schema: Mapping[str, Any]
     handler: Callable[..., str]
+    # A final tool ends the turn: it runs, and the text already written is the reply,
+    # with no follow-up request to the model.
+    final: bool = False
 
     def definition(self) -> dict[str, Any]:
         return {
@@ -43,6 +46,10 @@ class ToolRegistry:
     def definitions(self) -> list[dict[str, Any]]:
         # Sorted so the request prefix stays byte-identical and prompt caching keeps working.
         return [self._tools[name].definition() for name in sorted(self._tools)]
+
+    def is_final(self, name: str) -> bool:
+        tool = self._tools.get(name)
+        return tool is not None and tool.final
 
     def run(self, name: str, tool_input: Mapping[str, Any]) -> ToolResult:
         tool = self._tools.get(name)

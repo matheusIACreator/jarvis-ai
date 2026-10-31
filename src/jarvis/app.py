@@ -6,6 +6,7 @@ Ctrl+C to stop.
 
 from __future__ import annotations
 
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
@@ -18,6 +19,7 @@ from jarvis.stt.recorder import record_utterance
 from jarvis.stt.transcriber import Transcriber
 from jarvis.tools.base import ToolRegistry
 from jarvis.tools.clock import make_clock_tool
+from jarvis.tools.session import make_end_conversation_tool
 from jarvis.trigger.clap import ClapDetector
 from jarvis.trigger.microphone import MicrophoneStream
 from jarvis.tts.audio_file import FilePlayer
@@ -34,9 +36,10 @@ def main() -> None:
         raise SystemExit(str(exc)) from None
 
     speaker = Speaker(config.elevenlabs_api_key, config.elevenlabs_voice_id)
+    session_over = threading.Event()
     assistant = Assistant(
         client=anthropic.Anthropic(api_key=config.anthropic_api_key),
-        tools=ToolRegistry([make_clock_tool()]),
+        tools=ToolRegistry([make_clock_tool(), make_end_conversation_tool(session_over.set)]),
     )
     transcriber = Transcriber(config.whisper_model, config.whisper_language)
     music = FilePlayer(
@@ -69,7 +72,11 @@ def main() -> None:
             return transcriber.transcribe(audio) if audio is not None else ""
 
         conversation = Conversation(
-            listen=listen, think=think, say=say, on_heard=lambda text: print(f"you> {text}")
+            listen=listen,
+            think=think,
+            say=say,
+            on_heard=lambda text: print(f"you> {text}"),
+            finished=session_over.is_set,
         )
         with ThreadPoolExecutor(max_workers=1) as pool:
             while True:
@@ -78,6 +85,7 @@ def main() -> None:
                 for block in mic:
                     if detector.process(block):
                         break
+                session_over.clear()
                 try:
                     wake_up(music, speaker, pool)
                     conversation.run()

@@ -62,3 +62,18 @@ def test_dismissal_says_farewell_without_thinking():
     script = Script("What day is it?", "Thanks, that's all")
     assert run(script) == 1
     assert script.said[-1] == FAREWELL
+
+
+def test_finished_hook_ends_session_after_reply():
+    script = Script("Thanks, Jarvis", "Should not be heard")
+    conversation = Conversation(
+        listen=script.listen, think=script.think, say=script.say, finished=lambda: True
+    )
+    assert conversation.run() == 1
+    assert script.heard == ["Should not be heard"]
+
+
+def test_empty_reply_is_not_spoken():
+    script = Script("Hello")
+    Conversation(listen=script.listen, think=lambda text: "", say=script.say).run()
+    assert script.said == []

@@ -14,6 +14,7 @@ from jarvis.brain.assistant import Assistant
 from jarvis.config import load_config
 from jarvis.tools.base import ToolRegistry
 from jarvis.tools.clock import make_clock_tool
+from jarvis.tools.session import make_end_conversation_tool
 from jarvis.tts.speaker import Speaker
 
 
@@ -24,7 +25,9 @@ def main() -> None:
     )
     assistant = Assistant(
         client=anthropic.Anthropic(api_key=config.anthropic_api_key),
-        tools=ToolRegistry([make_clock_tool()]),
+        tools=ToolRegistry(
+            [make_clock_tool(), make_end_conversation_tool(lambda: print("(session would end here)"))]
+        ),
     )
     speaker = Speaker(config.elevenlabs_api_key, config.elevenlabs_voice_id) if speak else None
 

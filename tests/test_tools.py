@@ -4,6 +4,7 @@ import pytest
 
 from jarvis.tools.base import Tool, ToolRegistry
 from jarvis.tools.clock import make_clock_tool
+from jarvis.tools.session import make_end_conversation_tool
 
 
 def echo_tool(name="echo"):
@@ -57,3 +58,13 @@ def test_clock_tool_formats_local_time():
     fixed = datetime(2026, 10, 31, 21, 5, tzinfo=timezone(timedelta(hours=-3)))
     tool = make_clock_tool(now=lambda: fixed)
     assert tool.handler() == "Saturday, 2026-10-31 21:05 (UTC-0300)"
+
+
+def test_end_conversation_tool_is_final_and_calls_back():
+    calls = []
+    registry = ToolRegistry([make_end_conversation_tool(lambda: calls.append(1)), echo_tool()])
+    assert registry.is_final("end_conversation")
+    assert not registry.is_final("echo")
+    assert not registry.is_final("missing")
+    assert not registry.run("end_conversation", {}).is_error
+    assert calls == [1]

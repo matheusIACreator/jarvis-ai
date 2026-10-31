@@ -1,6 +1,8 @@
 from types import SimpleNamespace
 
 from jarvis.brain.assistant import (
+    ADVISOR_BETA,
+    ADVISOR_MODEL,
     FALLBACK_REPLY,
     MAX_TURNS_KEPT,
     MODEL,
@@ -8,6 +10,7 @@ from jarvis.brain.assistant import (
     Assistant,
 )
 from jarvis.tools.base import Tool, ToolRegistry
+from jarvis.tools.session import make_end_conversation_tool
 
 
 def text(value):
@@ -31,6 +34,7 @@ class FakeClient:
         self.responses = list(responses)
         self.requests = []
         self.messages = self
+        self.beta = SimpleNamespace(messages=self)
 
     def create(self, **kwargs):
         # Snapshot: the assistant keeps appending to the same list.
@@ -38,14 +42,14 @@ class FakeClient:
         return self.responses.pop(0)
 
 
-def registry():
+def registry(*extra):
     tool = Tool(
         "get_current_datetime",
         "Clock.",
         {"type": "object", "properties": {}},
         lambda: "Saturday, 2026-10-31 21:05",
     )
-    return ToolRegistry([tool])
+    return ToolRegistry([tool, *extra])
 
 
 def test_plain_reply_and_request_shape():
@@ -58,6 +62,9 @@ def test_plain_reply_and_request_shape():
     assert request["system"][0]["text"] == SYSTEM_PROMPT
     assert request["system"][0]["cache_control"] == {"type": "ephemeral"}
     assert request["tools"][0]["name"] == "get_current_datetime"
+    assert request["tools"][-1]["type"] == "advisor_20260301"
+    assert request["tools"][-1]["model"] == ADVISOR_MODEL
+    assert request["betas"] == [ADVISOR_BETA]
     assert "temperature" not in request
     assert request["messages"] == [{"role": "user", "content": "Hello"}]
 
@@ -129,3 +136,31 @@ def test_endless_tool_use_stops():
     client = FakeClient(*loops)
     assert Assistant(client=client, tools=registry()).reply("loop") == FALLBACK_REPLY
     assert len(client.requests) == 6
+
+
+def test_advisor_can_be_disabled():
+    client = FakeClient(response("end_turn", text("Hi.")))
+    Assistant(client=client, tools=registry(), advisor_model=None).reply("Hello")
+    request = client.requests[0]
+    assert all(tool.get("type") != "advisor_20260301" for tool in request["tools"])
+    assert request["betas"] == []
+
+
+def test_final_tool_ends_turn_without_follow_up_request():
+    ended = []
+    tools = registry(make_end_conversation_tool(lambda: ended.append(True)))
+    client = FakeClient(
+        response("tool_use", text("Good night, sir."), tool_use("end_conversation", {}))
+    )
+    assistant = Assistant(client=client, tools=tools)
+    assert assistant.reply("That's okay, thank you.") == "Good night, sir."
+    assert ended == [True]
+    assert len(client.requests) == 1
+    assert assistant.history[-1] == {"role": "assistant", "content": "Good night, sir."}
+
+
+def test_pause_turn_is_resumed_with_content_appended():
+    paused = response("pause_turn", SimpleNamespace(type="server_tool_use", name="advisor"))
+    client = FakeClient(paused, response("end_turn", text("Here is my advice, sir.")))
+    assert Assistant(client=client, tools=registry()).reply("Plan my week") == "Here is my advice, sir."
+    assert client.requests[1]["messages"][1] == {"role": "assistant", "content": paused.content}

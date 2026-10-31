@@ -60,6 +60,7 @@ class Conversation:
     think: Callable[[str], str]
     say: Callable[[str], None]
     on_heard: Callable[[str], None] = lambda text: None
+    finished: Callable[[], bool] = lambda: False  # e.g. the model called end_conversation
 
     def run(self) -> int:
         """Keep answering follow-ups until silence or a dismissal. Returns answered turns."""
@@ -72,5 +73,9 @@ class Conversation:
             if is_dismissal(text):
                 self.say(FAREWELL)
                 return turns
-            self.say(self.think(text))
+            reply = self.think(text)
+            if reply:
+                self.say(reply)
             turns += 1
+            if self.finished():
+                return turns
